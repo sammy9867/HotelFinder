@@ -8,6 +8,6 @@
               android:label="fragment_home" tools:layout="@layout/fragment_home">
         <action android:id="@+id/action_homeFragment_to_hotelSearchFragment" app:destination="@id/hotelSearchFragment"/>
     </fragment>
-    <fragment android:id="@+id/hotelSearchFragment" android:name="com.thesis.hotelfinder.ui.HotelSearchFragment"
-              android:label="fragment_hotel_search" tools:layout="@layout/fragment_hotel_search"/>
+    <fragment android:id="@+id/hotelSearchFragment" android:name="com.thesis.hotelfinder.ui.HotelsFragment"
+              android:label="fragment_hotel_search" tools:layout="@layout/fragment_hotels"/>
 </navigation>
