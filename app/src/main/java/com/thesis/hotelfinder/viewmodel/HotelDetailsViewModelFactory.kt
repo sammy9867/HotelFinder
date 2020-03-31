@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 
-class HotelsViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+class HotelDetailsViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return HotelsViewModel(context) as T
+        return HotelDetailsViewModel(context) as T
     }
 }

@@ -4,17 +4,27 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/navigation_graph"
             app:startDestination="@id/locationSearchFragment">
 
-    <fragment android:id="@+id/hotelSearchFragment" android:name="com.thesis.hotelfinder.ui.HotelsFragment"
+    <fragment android:id="@+id/hotelSearchFragment" android:name="com.thesis.hotelfinder.ui.HotelFragment"
               android:label="fragment_hotel_search" tools:layout="@layout/fragment_hotels">
         <argument
                 android:name="location_id"
                 app:argType="integer" />
-     </fragment>
+        <action android:id="@+id/action_hotelSearchFragment_to_hotelDetailsFragment"
+                app:destination="@id/hotelDetailsFragment"/>
+        <action android:id="@+id/action_hotelSearchFragment_to_locationSearchFragment"
+                app:destination="@id/locationSearchFragment"/>
+    </fragment>
 
 
     <fragment android:id="@+id/locationSearchFragment" android:name="com.thesis.hotelfinder.ui.LocationSearchFragment"
               android:label="fragment_location_search" tools:layout="@layout/fragment_location_search">
         <action android:id="@+id/action_locationSearchFragment_to_hotelSearchFragment"
                 app:destination="@id/hotelSearchFragment"/>
+    </fragment>
+    <fragment android:id="@+id/hotelDetailsFragment" android:name="com.thesis.hotelfinder.ui.HotelDetailsFragment"
+              android:label="fragment_hotel_details" tools:layout="@layout/fragment_hotel_details">
+        <argument
+                android:name="hotel_location_id"
+                app:argType="integer" />
     </fragment>
 </navigation>
