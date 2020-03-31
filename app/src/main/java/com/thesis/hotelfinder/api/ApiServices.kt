@@ -2,6 +2,7 @@ package com.thesis.hotelfinder.api
 
 import androidx.lifecycle.LiveData
 import com.thesis.hotelfinder.api.network.Resource
+import com.thesis.hotelfinder.api.response.HotelsResponse
 import com.thesis.hotelfinder.api.response.LocationSearchResponse
 import com.thesis.hotelfinder.util.Constants
 import retrofit2.http.GET
@@ -19,6 +20,19 @@ interface ApiServices{
         @Query("query") query: String,
         @Query("currency") currency: String
     ) : LiveData<Resource<LocationSearchResponse>>
+
+
+    @Headers(
+        "x-rapidapi-host: ${Constants.API_HOST}",
+        "x-rapidapi-key: ${Constants.API_KEY}"
+    )
+    @GET("hotels/list")
+    fun getHotelsListFromLocationId(
+        @Query("location_id") location_id: Int,
+        @Query("checkin") check_in_date: String,
+        @Query("adults") number_of_adults: Int,
+        @Query("rooms") number_of_rooms: Int)
+      : LiveData<Resource<HotelsResponse>>
 
 
 

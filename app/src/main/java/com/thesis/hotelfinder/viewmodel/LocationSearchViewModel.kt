@@ -9,10 +9,10 @@ import com.thesis.hotelfinder.repository.LocationSearchRepository
 
 class LocationSearchViewModel(context: Context) :ViewModel(){
 
-    private var hotelsRepository : LocationSearchRepository = LocationSearchRepository.getInstance(context)
+    private var locationSearchRepository : LocationSearchRepository = LocationSearchRepository.getInstance(context)
 
     fun getLocationIdFromLocationSearch(query: String, currency: String) : LiveData<Resource<LocationSearchResponse>>{
-        return hotelsRepository.getLocationIdFromLocationSearch(query, currency)
+        return locationSearchRepository.getLocationIdFromLocationSearch(query, currency)
     }
 
 }
