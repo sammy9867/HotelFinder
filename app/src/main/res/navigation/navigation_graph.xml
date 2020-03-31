@@ -4,8 +4,8 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/navigation_graph"
             app:startDestination="@id/homeFragment">
 
-    <fragment android:id="@+id/homeFragment" android:name="com.thesis.hotelfinder.ui.HomeFragment"
-              android:label="fragment_home" tools:layout="@layout/fragment_home">
+    <fragment android:id="@+id/homeFragment" android:name="com.thesis.hotelfinder.ui.LocationSearchFragment"
+              android:label="fragment_home" tools:layout="@layout/fragment_location_search">
         <action android:id="@+id/action_homeFragment_to_hotelSearchFragment" app:destination="@id/hotelSearchFragment"/>
     </fragment>
     <fragment android:id="@+id/hotelSearchFragment" android:name="com.thesis.hotelfinder.ui.HotelsFragment"

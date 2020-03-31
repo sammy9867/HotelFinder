@@ -14,31 +14,28 @@ import androidx.lifecycle.ViewModelProviders
 
 import com.thesis.hotelfinder.R
 import com.thesis.hotelfinder.api.network.Resource
-import com.thesis.hotelfinder.api.response.HotelsResponse
-import com.thesis.hotelfinder.databinding.FragmentHomeBinding
-import com.thesis.hotelfinder.viewmodel.HotelsViewModel
-import com.thesis.hotelfinder.viewmodel.HotelsViewModelFactory
+import com.thesis.hotelfinder.api.response.LocationSearchResponse
+import com.thesis.hotelfinder.viewmodel.LocationSearchViewModel
+import com.thesis.hotelfinder.viewmodel.LocationSearchViewModelFactory
 import com.google.gson.GsonBuilder
+import com.thesis.hotelfinder.databinding.FragmentLocationSearchBinding
 
 
+class LocationSearchFragment : Fragment() {
 
-
-
-class HomeFragment : Fragment() {
-
-    private lateinit var hotelsViewModel: HotelsViewModel
+    private lateinit var locationSearchViewModel: LocationSearchViewModel
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // binding object that holds all views in the given fragment
-        val binding : FragmentHomeBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_home, container, false
+        val binding : FragmentLocationSearchBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_location_search, container, false
         )
 
-        hotelsViewModel =  ViewModelProviders.of(this, HotelsViewModelFactory(context!!)).
-            get(HotelsViewModel::class.java)
-        hotelsViewModel.getHotelsFromLocationSearch("Warsaw", "GBP").
-            observe(this, Observer<Resource<HotelsResponse>>{hotelResponse ->
+        locationSearchViewModel =  ViewModelProviders.of(this, LocationSearchViewModelFactory(context!!)).
+            get(LocationSearchViewModel::class.java)
+        locationSearchViewModel.getLocationIdFromLocationSearch("London", "GBP").
+            observe(this, Observer<Resource<LocationSearchResponse>>{ hotelResponse ->
 
             when{
                 hotelResponse.status.isLoading() ->{
@@ -47,9 +44,12 @@ class HomeFragment : Fragment() {
 
                 hotelResponse.status.isSuccessful() ->{
                     Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
-                    Log.i("success", hotelResponse.data.toString())
-
-
+                    for(i in hotelResponse.data!!.data){
+                        if(i.result_type == "geos"){
+                            val locationSearch = i.result_object
+                            Log.i("success", locationSearch.name + " " + locationSearch.location_id.toString())
+                        }
+                    }
                 }
 
                 hotelResponse.status.isError() ->{
