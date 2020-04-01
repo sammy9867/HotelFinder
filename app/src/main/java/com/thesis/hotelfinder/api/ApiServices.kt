@@ -33,7 +33,4 @@ interface ApiServices{
         @Query("location_id") location_id: Int)
             : LiveData<Resource<HotelDetailsResponse>>
 
-
-
-
 }

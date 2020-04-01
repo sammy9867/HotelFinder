@@ -13,21 +13,26 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
 
 import com.thesis.hotelfinder.R
+import com.thesis.hotelfinder.adapter.HotelRecyclerAdapter
+import com.thesis.hotelfinder.adapter.OnHotelListener
 import com.thesis.hotelfinder.api.network.Resource
 import com.thesis.hotelfinder.api.response.HotelResponse
 import com.thesis.hotelfinder.databinding.FragmentHotelsBinding
+import com.thesis.hotelfinder.model.Hotel
 import com.thesis.hotelfinder.viewmodel.HotelsViewModel
 import com.thesis.hotelfinder.viewmodel.HotelViewModelFactory
 
 
-class HotelFragment : Fragment() {
+class HotelFragment : Fragment(), OnHotelListener {
 
     private lateinit var hotelsViewModel: HotelsViewModel
+    private var hotelList: MutableList<Hotel> = mutableListOf()
 
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
 
         // binding object that holds all views in the given fragment
         val binding: FragmentHotelsBinding = DataBindingUtil.inflate(
@@ -47,20 +52,31 @@ class HotelFragment : Fragment() {
                         Toast.makeText(context,"isLoading", Toast.LENGTH_SHORT).show()
                     }
 
-                    hotelResponse.status.isSuccessful() ->{
-
-                        var bundle = Bundle()
+                    hotelResponse.status.isSuccessful() -> {
+                        val adapter = HotelRecyclerAdapter(context!!, hotelList, this)
+                        binding.rvHotel.adapter = adapter
+                        binding.rvHotel.layoutManager = LinearLayoutManager(context)
                         Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
-                        for(i in hotelResponse.data!!.data){
-                            Log.i("success", i.name + " " + i.location_id.toString())
-                            bundle = bundleOf("hotel_location_id" to i.location_id)
+                        for (i in hotelResponse.data!!.data) {
+                            hotelList.add(
+                                Hotel(
+                                    i.location_id,
+                                    i.name,
+                                    i.latitude,
+                                    i.longitude,
+                                    i.num_reviews,
+                                    i.ranking,
+                                    i.rating
+                                )
+                            )
+
                         }
 
+                        binding.rvHotel.adapter!!.notifyDataSetChanged()
 
-                        binding.hotelDetails.setOnClickListener {
-                            view!!.findNavController().navigate(R.id.action_hotelSearchFragment_to_hotelDetailsFragment, bundle)
-                        }
                     }
+
+
 
                     hotelResponse.status.isError() ->{
                         Toast.makeText(context, "isError", Toast.LENGTH_SHORT).show()
@@ -74,5 +90,9 @@ class HotelFragment : Fragment() {
         return binding.root
     }
 
-
+    override fun onHotelClick(position: Int) {
+        val hotel = hotelList[position]
+        val bundle = bundleOf("hotel_location_id" to  hotel.location_id)
+        view!!.findNavController().navigate(R.id.action_hotelSearchFragment_to_hotelDetailsFragment, bundle)
+    }
 }
