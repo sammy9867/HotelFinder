@@ -12,10 +12,6 @@ import retrofit2.http.Query
 
 interface ApiServices{
 
-    @Headers(
-        "x-rapidapi-host: ${Constants.API_HOST}",
-        "x-rapidapi-key: ${Constants.API_KEY}"
-    )
     @GET("locations/search?sort=relevance")
     fun getLocationIdFromLocationSearch(
         @Query("query") query: String,
@@ -23,10 +19,6 @@ interface ApiServices{
     ) : LiveData<Resource<LocationSearchResponse>>
 
 
-    @Headers(
-        "x-rapidapi-host: ${Constants.API_HOST}",
-        "x-rapidapi-key: ${Constants.API_KEY}"
-    )
     @GET("hotels/list")
     fun getHotelsListFromLocationId(
         @Query("location_id") location_id: Int,
@@ -36,10 +28,6 @@ interface ApiServices{
       : LiveData<Resource<HotelResponse>>
 
 
-    @Headers(
-        "x-rapidapi-host: ${Constants.API_HOST}",
-        "x-rapidapi-key: ${Constants.API_KEY}"
-    )
     @GET("hotels/get-details")
     fun getHotelDetailsListFromLocationId(
         @Query("location_id") location_id: Int)
