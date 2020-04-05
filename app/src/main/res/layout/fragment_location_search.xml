@@ -5,8 +5,9 @@
         tools:context=".ui.LocationSearchFragment">
 
     <RelativeLayout
+            android:id="@+id/relLayoutLocationToolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/locationSearchTopBar"
@@ -27,21 +28,29 @@
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-
-        <FrameLayout
-                android:id="@+id/frameLayout"
+        <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/locationSearchTopBar">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/locationSearchTopBar">
 
-            <TextView
-                    android:id="@+id/displayJson"
+            <androidx.core.widget.ContentLoadingProgressBar
+                    android:id="@+id/progressBarPhotos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    style="?android:attr/progressBarStyleLarge"
+            />
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_photos"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/hello_blank_fragment"/>
-
-        </FrameLayout>
-
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
+        </RelativeLayout>
 
     </RelativeLayout>
 </layout>

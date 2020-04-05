@@ -1,6 +1,7 @@
 package com.thesis.hotelfinder.api.network
 
-import com.thesis.hotelfinder.api.ApiServices
+import com.thesis.hotelfinder.api.TripAdvisorApiServices
+import com.thesis.hotelfinder.api.UnSplashApiServices
 import com.thesis.hotelfinder.util.Constants
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -9,30 +10,52 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ServiceGenerator{
 
-    //creating a Network Interceptor to add api_host and api_key in all the request as Interceptor
-    private val interceptor = Interceptor { chain ->
+    // Creating a Network Interceptor to add api_host and api_key in all the request as Interceptor
+    private val interceptorTripAdvisor = Interceptor { chain ->
         val request = chain.request()
             .newBuilder()
-            .header("x-rapidapi-host",Constants.API_HOST)
-            .header("x-rapidapi-key", Constants.API_KEY)
+            .header("x-rapidapi-host",Constants.RAPID_API_HOST)
+            .header("x-rapidapi-key", Constants.RAPID_API_KEY)
             .build()
         chain.proceed(request)
     }
 
-    // we are creating a networking client using OkHttp and add our Interceptor.
-    private val apiClient = OkHttpClient().newBuilder().addInterceptor(interceptor).build()
+    private val interceptorUnSplash = Interceptor { chain ->
+        val request = chain.request()
+            .newBuilder()
+            .header("client_id",Constants.UNSPLASH_ACCESS_KEY)
+            .build()
+        chain.proceed(request)
+    }
 
+    // Creating a networking client using OkHttp and add our Interceptor.
+    private val apiClientTripAdvisor = OkHttpClient().newBuilder().addInterceptor(interceptorTripAdvisor).build()
+    private val apiClientUnSplash= OkHttpClient().newBuilder().addInterceptor(interceptorUnSplash).build()
 
-    private fun getRetrofit(URL : String): Retrofit {
+    private fun getRetrofitForTripAdvisor(URL : String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(URL)
-            .client(apiClient)
+            .client(apiClientTripAdvisor)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
     }
-    val apiService: ApiServices =
-        getRetrofit("https://tripadvisor1.p.rapidapi.com/").create(ApiServices::class.java)
+
+    private fun getRetrofitForUnSplash(URL : String): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(URL)
+            .client(apiClientTripAdvisor)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(LiveDataCallAdapterFactory())
+            .build()
+    }
+
+
+    val tripAdvisorApiService: TripAdvisorApiServices =
+        getRetrofitForTripAdvisor("https://tripadvisor1.p.rapidapi.com/").create(TripAdvisorApiServices::class.java)
+
+    val unSplashApiService: UnSplashApiServices =
+        getRetrofitForUnSplash("https://api.unsplash.com/").create(UnSplashApiServices::class.java)
 
 }
 

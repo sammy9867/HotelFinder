@@ -10,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
-interface ApiServices{
+interface TripAdvisorApiServices{
 
     @GET("locations/search?sort=relevance")
     fun getLocationIdFromLocationSearch(

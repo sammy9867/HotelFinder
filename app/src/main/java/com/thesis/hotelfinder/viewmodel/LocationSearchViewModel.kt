@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.thesis.hotelfinder.api.network.Resource
 import com.thesis.hotelfinder.api.response.LocationSearchResponse
+import com.thesis.hotelfinder.api.response.UnSplashPhotosResponse
 import com.thesis.hotelfinder.repository.LocationSearchRepository
 
 class LocationSearchViewModel(context: Context) :ViewModel(){
@@ -13,6 +14,10 @@ class LocationSearchViewModel(context: Context) :ViewModel(){
 
     fun getLocationIdFromLocationSearch(query: String, currency: String) : LiveData<Resource<LocationSearchResponse>>{
         return locationSearchRepository.getLocationIdFromLocationSearch(query, currency)
+    }
+
+    fun getPhotos(query: String): LiveData<Resource<UnSplashPhotosResponse>>{
+        return locationSearchRepository.getPhotos(query)
     }
 
 }

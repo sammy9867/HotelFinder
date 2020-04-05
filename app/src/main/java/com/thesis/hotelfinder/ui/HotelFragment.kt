@@ -49,10 +49,11 @@ class HotelFragment : Fragment(), OnHotelListener {
 
                 when{
                     hotelResponse.status.isLoading() ->{
-                        Toast.makeText(context,"isLoading", Toast.LENGTH_SHORT).show()
+                        binding.progressBarHotels.show()
                     }
 
                     hotelResponse.status.isSuccessful() -> {
+                        binding.progressBarHotels.hide()
                         val adapter = HotelRecyclerAdapter(context!!, hotelList, this)
                         binding.rvHotel.adapter = adapter
                         binding.rvHotel.layoutManager = LinearLayoutManager(context)
@@ -60,7 +61,7 @@ class HotelFragment : Fragment(), OnHotelListener {
                         for (i in hotelResponse.data!!.data) {
                             hotelList.add(
                                 Hotel(i.location_id, i.name, i.latitude, i.longitude, i.num_reviews,
-                                    i.ranking, i.rating, i.price_level, i.price)
+                                    i.ranking, i.rating, i.price_level?: "", i.price?: "")
                             )
 
                         }
@@ -72,6 +73,7 @@ class HotelFragment : Fragment(), OnHotelListener {
 
 
                     hotelResponse.status.isError() ->{
+                        binding.progressBarHotels.hide()
                         Toast.makeText(context, "isError", Toast.LENGTH_SHORT).show()
                         Log.i("error", GsonBuilder().setPrettyPrinting().create().toJson(hotelResponse.errorMessage))
                     }

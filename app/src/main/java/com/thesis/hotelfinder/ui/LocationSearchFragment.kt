@@ -21,6 +21,7 @@ import com.thesis.hotelfinder.api.response.LocationSearchResponse
 import com.thesis.hotelfinder.viewmodel.LocationSearchViewModel
 import com.thesis.hotelfinder.viewmodel.LocationSearchViewModelFactory
 import com.google.gson.GsonBuilder
+import com.thesis.hotelfinder.api.response.UnSplashPhotosResponse
 import com.thesis.hotelfinder.databinding.FragmentLocationSearchBinding
 
 
@@ -38,6 +39,7 @@ class LocationSearchFragment : Fragment() {
         locationSearchViewModel =  ViewModelProviders.of(this, LocationSearchViewModelFactory(context!!)).
             get(LocationSearchViewModel::class.java)
 
+        // Search destination
         binding.locationSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
 
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -53,6 +55,26 @@ class LocationSearchFragment : Fragment() {
                 }
 
                 return false
+            }
+
+        })
+
+        // Recycler view for unSplash images
+        locationSearchViewModel.getPhotos("England").
+            observe(this, Observer<Resource<UnSplashPhotosResponse>>{ unSplashResponse ->
+
+            when{
+                unSplashResponse.status.isLoading() ->{
+                    Toast.makeText(context,"isLoading", Toast.LENGTH_SHORT).show()
+                }
+                unSplashResponse.status.isSuccessful() ->{
+                    Toast.makeText(context, "UnSplash isSuccessful", Toast.LENGTH_SHORT).show()
+                }
+
+                unSplashResponse.status.isError() ->{
+                    Toast.makeText(context, "isError", Toast.LENGTH_SHORT).show()
+                    Log.i("error", GsonBuilder().setPrettyPrinting().create().toJson(unSplashResponse.errorMessage))
+                }
             }
 
         })
@@ -81,9 +103,6 @@ class LocationSearchFragment : Fragment() {
                         }
 
                         view!!.findNavController().navigate(R.id.action_locationSearchFragment_to_hotelSearchFragment, bundle)
-
-
-
 
                     }
 

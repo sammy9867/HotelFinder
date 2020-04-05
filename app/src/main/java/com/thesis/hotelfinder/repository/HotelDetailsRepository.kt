@@ -24,7 +24,7 @@ class HotelDetailsRepository(context: Context){
 
         return object : NetworkBoundResource<HotelDetailsResponse>() {
             override fun createCall(): LiveData<Resource<HotelDetailsResponse>> {
-                return ServiceGenerator.apiService.
+                return ServiceGenerator.tripAdvisorApiService.
                     getHotelDetailsListFromLocationId(location_id)
             }
 
