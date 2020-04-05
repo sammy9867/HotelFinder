@@ -8,5 +8,6 @@ data class Hotel(@SerializedName("location_id") val location_id: Int,
                  @SerializedName("longitude") val longitude: Double,
                  @SerializedName("num_reviews") val num_reviews: Int,
                  @SerializedName("ranking") val ranking: String,
-                 @SerializedName("rating") val rating: Float
-                  )
+                 @SerializedName("rating") val rating: Float,
+                 @SerializedName("price_level") val price_level: String,
+                 @SerializedName("price") val price: String)

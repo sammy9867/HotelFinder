@@ -59,15 +59,8 @@ class HotelFragment : Fragment(), OnHotelListener {
                         Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
                         for (i in hotelResponse.data!!.data) {
                             hotelList.add(
-                                Hotel(
-                                    i.location_id,
-                                    i.name,
-                                    i.latitude,
-                                    i.longitude,
-                                    i.num_reviews,
-                                    i.ranking,
-                                    i.rating
-                                )
+                                Hotel(i.location_id, i.name, i.latitude, i.longitude, i.num_reviews,
+                                    i.ranking, i.rating, i.price_level, i.price)
                             )
 
                         }
