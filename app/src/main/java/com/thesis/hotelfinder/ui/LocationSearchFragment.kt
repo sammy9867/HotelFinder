@@ -14,6 +14,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.thesis.hotelfinder.R
 import com.thesis.hotelfinder.api.network.Resource
@@ -21,13 +23,17 @@ import com.thesis.hotelfinder.api.response.LocationSearchResponse
 import com.thesis.hotelfinder.viewmodel.LocationSearchViewModel
 import com.thesis.hotelfinder.viewmodel.LocationSearchViewModelFactory
 import com.google.gson.GsonBuilder
+import com.thesis.hotelfinder.adapter.OnCountryListener
+import com.thesis.hotelfinder.adapter.StaggeredRecyclerAdapter
 import com.thesis.hotelfinder.api.response.UnSplashPhotosResponse
 import com.thesis.hotelfinder.databinding.FragmentLocationSearchBinding
+import com.thesis.hotelfinder.model.Country
 
 
-class LocationSearchFragment : Fragment() {
+class LocationSearchFragment : Fragment(), OnCountryListener {
 
     private lateinit var locationSearchViewModel: LocationSearchViewModel
+    private var countryList : MutableList<Country> = mutableListOf()
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -60,30 +66,12 @@ class LocationSearchFragment : Fragment() {
         })
 
         // Recycler view for unSplash images
-        locationSearchViewModel.getPhotos("England").
-            observe(this, Observer<Resource<UnSplashPhotosResponse>>{ unSplashResponse ->
-
-            when{
-                unSplashResponse.status.isLoading() ->{
-                    Toast.makeText(context,"isLoading", Toast.LENGTH_SHORT).show()
-                }
-                unSplashResponse.status.isSuccessful() ->{
-                    Toast.makeText(context, "UnSplash isSuccessful", Toast.LENGTH_SHORT).show()
-                }
-
-                unSplashResponse.status.isError() ->{
-                    Toast.makeText(context, "isError", Toast.LENGTH_SHORT).show()
-                    Log.i("error", GsonBuilder().setPrettyPrinting().create().toJson(unSplashResponse.errorMessage))
-                }
-            }
-
-        })
-
+        getPhotos(binding)
 
         return binding.root
     }
 
-    fun searchHotels(query: String){
+    private fun searchHotels(query: String){
         locationSearchViewModel.getLocationIdFromLocationSearch(query, "GBP").
             observe(this, Observer<Resource<LocationSearchResponse>>{ locationSearchResponse ->
 
@@ -117,4 +105,52 @@ class LocationSearchFragment : Fragment() {
 
     }
 
+    private fun getPhotos(binding : FragmentLocationSearchBinding){
+
+        val countryNameList = mutableListOf("England", "USA")
+
+        val adapter = StaggeredRecyclerAdapter(context!!, countryList, this)
+        binding.rvPhotos.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        binding.rvPhotos.adapter = adapter
+
+        for(countryName in countryNameList){
+            locationSearchViewModel.getPhotos(countryName).
+                observe(this, Observer<Resource<UnSplashPhotosResponse>>{ unSplashResponse ->
+                    when{
+                        unSplashResponse.status.isLoading() ->{
+                            binding.progressBarPhotos.show()
+                        }
+                        unSplashResponse.status.isSuccessful() ->{
+                            binding.progressBarPhotos.hide()
+                            for(i in unSplashResponse.data!!.results){
+                                countryList.add(Country(countryName, i.urls.raw))
+                                break
+                            }
+
+                            Log.i("List Size", countryList.size.toString())
+                            binding.rvPhotos.adapter!!.notifyDataSetChanged()
+                        }
+
+
+
+                        unSplashResponse.status.isError() ->{
+                            binding.progressBarPhotos.hide()
+                            Toast.makeText(context, "isError", Toast.LENGTH_SHORT).show()
+                            Log.i("error", GsonBuilder().setPrettyPrinting().create().toJson(unSplashResponse.errorMessage))
+                        }
+                    }
+
+                })
+
+
+        }
+
+
+
+    }
+
+    override fun onCountryClick(position: Int) {
+        val country = countryList[position]
+        Log.i("Name:", country.name)
+    }
 }

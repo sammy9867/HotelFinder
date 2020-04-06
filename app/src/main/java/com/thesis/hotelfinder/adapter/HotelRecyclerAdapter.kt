@@ -29,7 +29,9 @@ class HotelRecyclerAdapter(private val context: Context, private val hotelList: 
         return hotelList.size
     }
 
-    inner class HotelListViewHolder(itemView: View, private val onHotelListener: OnHotelListener): RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    inner class HotelListViewHolder(itemView: View, private val onHotelListener: OnHotelListener):
+        RecyclerView.ViewHolder(itemView), View.OnClickListener{
+
         val hotelNameTv =  itemView.hotelName
         val hotelRatingsTv = itemView.hotelRating
 

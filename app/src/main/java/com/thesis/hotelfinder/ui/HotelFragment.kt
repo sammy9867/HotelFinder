@@ -60,10 +60,9 @@ class HotelFragment : Fragment(), OnHotelListener {
                         Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
                         for (i in hotelResponse.data!!.data) {
                             hotelList.add(
-                                Hotel(i.location_id, i.name, i.latitude, i.longitude, i.num_reviews,
-                                    i.ranking, i.rating, i.price_level?: "", i.price?: "")
+                                Hotel(i.location_id, i.name, i.latitude, i.longitude, i.num_reviews?:0,
+                                    i.ranking?: "", i.rating?:0f, i.price_level?: "", i.price?: "")
                             )
-
                         }
 
                         binding.rvHotel.adapter!!.notifyDataSetChanged()

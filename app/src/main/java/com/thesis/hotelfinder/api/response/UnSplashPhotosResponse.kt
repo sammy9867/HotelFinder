@@ -10,8 +10,8 @@ data class UnSplashResults(@SerializedName("id") val id : String,
                            @SerializedName("color") val color : String,
                            @SerializedName("urls") val urls : UnSplashImageUrls)
 
-data class UnSplashImageUrls(@SerializedName("raw") val raw : String,
-                             @SerializedName("full") val full : String,
+data class UnSplashImageUrls(@SerializedName("full") val raw : String)
+                   /*          @SerializedName("full") val full : String,
                              @SerializedName("regular") val regular : String,
                              @SerializedName("small") val small : String,
-                             @SerializedName("thumb") val thumb : String)
+                             @SerializedName("thumb") val thumb : String)*/

@@ -20,18 +20,20 @@ object ServiceGenerator{
         chain.proceed(request)
     }
 
-    private val interceptorUnSplash = Interceptor { chain ->
+    // Creating a networking client using OkHttp and add our Interceptor.
+    private val apiClientTripAdvisor = OkHttpClient().newBuilder().addInterceptor(interceptorTripAdvisor).build()
+
+   /* private val interceptorUnSplash = Interceptor { chain ->
         val request = chain.request()
             .newBuilder()
-            .header("client_id",Constants.UNSPLASH_ACCESS_KEY)
+            .header("client_id", Constants.UNSPLASH_ACCESS_KEY)
             .build()
         chain.proceed(request)
     }
 
-    // Creating a networking client using OkHttp and add our Interceptor.
-    private val apiClientTripAdvisor = OkHttpClient().newBuilder().addInterceptor(interceptorTripAdvisor).build()
-    private val apiClientUnSplash= OkHttpClient().newBuilder().addInterceptor(interceptorUnSplash).build()
 
+   // private val apiClientUnSplash= OkHttpClient().newBuilder().addInterceptor(interceptorUnSplash).build()
+*/
     private fun getRetrofitForTripAdvisor(URL : String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(URL)
@@ -44,7 +46,6 @@ object ServiceGenerator{
     private fun getRetrofitForUnSplash(URL : String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(URL)
-            .client(apiClientTripAdvisor)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
