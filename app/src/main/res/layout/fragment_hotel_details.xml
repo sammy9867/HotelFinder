@@ -5,16 +5,60 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".ui.HotelDetailsFragment">
 
-        <FrameLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="match_parent">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <ImageView
+                android:id="@+id/hotelDetailsIv"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:contentDescription="@string/hello_blank_fragment"/>
+
+        <TextView
+                android:id="@+id/hotelDetailsName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+        />
 
 
-            <!-- TODO: Update blank fragment layout -->
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="hotel details"/>
+        <TextView
+                android:id="@+id/hotelDetailsRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+        />
 
-        </FrameLayout>
+        <TextView
+                android:id="@+id/hotelDetailsNumReviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+        />
+
+        <TextView
+                android:id="@+id/hotelDetailsRanking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+        />
+
+        <TextView
+                android:id="@+id/hotelDetailsAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+        />
+
+        <TextView
+                android:id="@+id/hotelDetailsPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+        />
+
+    </LinearLayout>
 </layout>

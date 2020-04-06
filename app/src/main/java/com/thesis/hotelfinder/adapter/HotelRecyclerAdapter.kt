@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.thesis.hotelfinder.R
 import com.thesis.hotelfinder.model.Hotel
 import kotlinx.android.synthetic.main.layout_hotel_items.view.*
@@ -23,6 +26,11 @@ class HotelRecyclerAdapter(private val context: Context, private val hotelList: 
         val hotel = hotelList[position]
         holder.hotelNameTv.text = hotel.name
         holder.hotelRatingsTv.text = hotel.rating.toString()
+        Glide.with(this.context)
+            .load(hotel.photo!!.images.original.url)
+            .apply( RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.ALL))
+            .into(holder.hotelIv)
     }
 
     override fun getItemCount(): Int {
@@ -34,6 +42,7 @@ class HotelRecyclerAdapter(private val context: Context, private val hotelList: 
 
         val hotelNameTv =  itemView.hotelName
         val hotelRatingsTv = itemView.hotelRating
+        val hotelIv = itemView.hotelImageView
 
         init{
             itemView.setOnClickListener(this)

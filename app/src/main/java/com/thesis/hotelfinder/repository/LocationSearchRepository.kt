@@ -5,10 +5,7 @@ import androidx.lifecycle.LiveData
 import com.thesis.hotelfinder.api.network.NetworkBoundResource
 import com.thesis.hotelfinder.api.network.Resource
 import com.thesis.hotelfinder.api.network.ServiceGenerator.tripAdvisorApiService
-import com.thesis.hotelfinder.api.network.ServiceGenerator.unSplashApiService
 import com.thesis.hotelfinder.api.response.LocationSearchResponse
-import com.thesis.hotelfinder.api.response.UnSplashPhotosResponse
-
 
 class LocationSearchRepository(context: Context){
 
@@ -33,17 +30,6 @@ class LocationSearchRepository(context: Context){
 
         }.asLiveData()
     }
-
-    fun getPhotos(query: String): LiveData<Resource<UnSplashPhotosResponse>>{
-
-        return object : NetworkBoundResource<UnSplashPhotosResponse>() {
-            override fun createCall(): LiveData<Resource<UnSplashPhotosResponse>> {
-                return unSplashApiService.getPhotos(query)
-            }
-
-        }.asLiveData()
-    }
-
 
 
 }

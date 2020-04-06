@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.signature.ObjectKey
 import com.thesis.hotelfinder.R
-import com.thesis.hotelfinder.api.response.UnSplashResults
 import com.thesis.hotelfinder.model.Country
 import kotlinx.android.synthetic.main.layout_grid_images.view.*
 
@@ -27,7 +28,8 @@ class StaggeredRecyclerAdapter(private val context: Context,
 
         Glide.with(this.context)
             .load(country.image_url)
-            .signature(ObjectKey(System.currentTimeMillis()))
+            .apply( RequestOptions()
+            .diskCacheStrategy(DiskCacheStrategy.ALL))
             .into(holder.countryImage)
 
         holder.countryName.text = country.name
