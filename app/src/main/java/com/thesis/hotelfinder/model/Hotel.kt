@@ -1,50 +1,194 @@
 package com.thesis.hotelfinder.model
 
+import android.os.Parcelable
+import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 import com.google.gson.annotations.SerializedName
-
-data class Hotel(@SerializedName("location_id") val location_id: Int,
-                 @SerializedName("name") val name: String,
-                 @SerializedName("latitude") val latitude: Double,
-                 @SerializedName("longitude") val longitude: Double,
-                 @SerializedName("num_reviews") val num_reviews: Int?,
-                 @SerializedName("ranking") val ranking: String?,
-                 @SerializedName("rating") val rating: Float?,
-                 @SerializedName("price_level") val price_level: String?,
-                 @SerializedName("price") val price: String?,
-                 @SerializedName("photo") val photo: Photo?)
-
-data class HotelDetails(@SerializedName("location_id") val location_id: Int,
-                        @SerializedName("name") val name: String,
-                        @SerializedName("latitude") val latitude: Double,
-                        @SerializedName("longitude") val longitude: Double,
-                        @SerializedName("num_reviews") val num_reviews: Int?,
-                        @SerializedName("ranking") val ranking: String?,
-                        @SerializedName("hotel_class") val hotel_class: String,
-                        @SerializedName("rating") val rating: Float?,
-                        @SerializedName("phone") val phone: String?,
-                        @SerializedName("website") val website: String,
-                        @SerializedName("email") val email: String,
-                        @SerializedName("address") val address: String,
-                        @SerializedName("price_level") val price_level: String?,
-                        @SerializedName("price") val price: String?,
-                        @SerializedName("photo") val photo: Photo?,
-                        @SerializedName("awards") val awards: List<Award>,
-                        @SerializedName("amenities") val amenities: List<Amenity>)
+import com.thesis.hotelfinder.db.converter.MyConverter
+import kotlinx.android.parcel.Parcelize
 
 
+@Parcelize
+@Entity(tableName = "hotel_table",
+        foreignKeys = [ForeignKey(entity = LocationSearch::class,
+                                  parentColumns = arrayOf("location_id"),
+                                  childColumns = arrayOf("location_search_id"),
+                                  onDelete = CASCADE)])
+data class Hotel(
+    @PrimaryKey
+    @ColumnInfo(name = "location_id")
+    @SerializedName("location_id")
+    var location_id: Int,
 
-data class Photo(@SerializedName("images") val images: Images)
+    @ColumnInfo(name = "location_search_id", index = true)
+    var location_search_id: Int,
 
-data class Images(@SerializedName("original") val original: Original)
+    @ColumnInfo(name = "name")
+    @SerializedName("name") var name: String,
 
-data class Original(@SerializedName("url") val url: String,
-                    @SerializedName("width") val width: String,
-                    @SerializedName("height") val height: String)
+    @ColumnInfo(name = "latitude")
+    @SerializedName("latitude") var latitude: Double,
+
+    @ColumnInfo(name = "longitude")
+    @SerializedName("longitude") var longitude: Double,
+
+    @ColumnInfo(name = "num_reviews")
+    @SerializedName("num_reviews") var num_reviews: Int?,
+
+    @ColumnInfo(name = "ranking")
+    @SerializedName("ranking") var ranking: String?,
+
+    @ColumnInfo(name = "rating")
+    @SerializedName("rating") var rating: Float?,
+
+    @ColumnInfo(name = "price_level")
+    @SerializedName("price_level") var price_level: String?,
+
+    @ColumnInfo(name = "price")
+    @SerializedName("price") var price: String?,
+
+    @ColumnInfo(name = "photo")
+    @TypeConverters(MyConverter::class)
+    @SerializedName("photo")
+    var photo: Photo?) : Parcelable
+
+@Parcelize
+@Entity(tableName = "hotel_details_table")
+data class HotelDetails(
+
+    @PrimaryKey
+    @ColumnInfo(name = "location_id")
+    @SerializedName("location_id")
+    var location_id: Int,
+
+    @ColumnInfo(name = "name")
+    @SerializedName("name")
+    var name: String,
+
+    @ColumnInfo(name = "latitude")
+    @SerializedName("latitude")
+    var latitude: Double,
+
+    @ColumnInfo(name = "longitude")
+    @SerializedName("longitude")
+    var longitude: Double,
+
+    @ColumnInfo(name = "num_reviews")
+    @SerializedName("num_reviews")
+    var num_reviews: Int?,
+
+    @ColumnInfo(name = "ranking")
+    @SerializedName("ranking")
+    var ranking: String?,
+
+    @ColumnInfo(name = "rating")
+    @SerializedName("rating")
+    var rating: Float?,
+
+    @ColumnInfo(name = "hotel_class")
+    @SerializedName("hotel_class")
+    var hotel_class: String,
+
+    @ColumnInfo(name = "phone")
+    @SerializedName("phone")
+    var phone: String?,
+
+    @ColumnInfo(name = "website")
+    @SerializedName("website")
+    var website: String,
+
+    @ColumnInfo(name = "email")
+    @SerializedName("email")
+    var email: String,
+
+    @ColumnInfo(name = "address")
+    @SerializedName("address")
+    var address: String,
+
+    @ColumnInfo(name = "price_level")
+    @SerializedName("price_level")
+    var price_level: String?,
+
+    @ColumnInfo(name = "price")
+    @SerializedName("price")
+    var price: String?,
+
+    @ColumnInfo(name = "photo")
+    @SerializedName("photo")
+    @TypeConverters(MyConverter::class)
+    var photo: Photo?,
+
+    @ColumnInfo(name = "awards")
+    @SerializedName("awards")
+    @TypeConverters(MyConverter::class)
+    var awards: List<Award>,
+
+    @ColumnInfo(name = "amenities")
+    @SerializedName("amenities")
+    @TypeConverters(MyConverter::class)
+    var amenities: List<Amenity>): Parcelable
 
 
-data class Award(@SerializedName("award_type") val award_type: String,
-                 @SerializedName("display_name") val display_name: String,
-                 @SerializedName("year") val year: String)
 
-data class Amenity(@SerializedName("key") val key: String,
-                   @SerializedName("name") val name: String)
+@Parcelize
+@Entity(tableName = "photo_table")
+data class Photo(
+    @PrimaryKey
+    @ColumnInfo(name = "images")
+    @SerializedName("images")
+    @TypeConverters(MyConverter::class)
+    var images: Images) : Parcelable
+
+@Parcelize
+@Entity(tableName = "images_table")
+data class Images(
+    @PrimaryKey
+    @ColumnInfo(name = "original")
+    @SerializedName("original")
+    @TypeConverters(MyConverter::class)
+    var original: Original): Parcelable
+
+@Parcelize
+@Entity(tableName = "original_table")
+data class Original(
+    @PrimaryKey
+    @ColumnInfo(name = "url")
+    @SerializedName("url")
+    var url: String,
+
+    @ColumnInfo(name = "width")
+    @SerializedName("width")
+    var width: String,
+
+    @ColumnInfo(name = "height")
+    @SerializedName("height")
+    var height: String): Parcelable
+
+
+@Parcelize
+@Entity(tableName = "awards_table")
+data class Award(
+    @PrimaryKey
+    @ColumnInfo(name = "award_type")
+    @SerializedName("award_type")
+    var award_type: String,
+
+    @ColumnInfo(name = "display_name")
+    @SerializedName("display_name")
+    var display_name: String,
+
+    @ColumnInfo(name = "year")
+    @SerializedName("year")
+    var year: String): Parcelable
+
+@Parcelize
+@Entity(tableName = "amenities_table")
+data class Amenity(
+    @PrimaryKey
+    @ColumnInfo(name = "key")
+    @SerializedName("key")
+    var key: String,
+
+    @ColumnInfo(name = "name")
+    @SerializedName("name")
+    var name: String): Parcelable

@@ -44,8 +44,8 @@ class HotelFragment : Fragment(), OnHotelListener {
 
         hotelsViewModel =  ViewModelProviders.of(this, HotelViewModelFactory(context!!)).
             get(HotelsViewModel::class.java)
-        hotelsViewModel.getHotelsListFromLocationId(getLocationId!!, "2020-04-09", 1, 1).
-            observe(this, Observer<Resource<HotelResponse>>{ hotelResponse ->
+        hotelsViewModel.getHotelsListFromLocationId(getLocationId!!, "2020-04-20", 1, 1).
+            observe(this, Observer<Resource<List<Hotel>>>{ hotelResponse ->
 
                 when{
                     hotelResponse.status.isLoading() ->{
@@ -57,18 +57,25 @@ class HotelFragment : Fragment(), OnHotelListener {
                         val adapter = HotelRecyclerAdapter(context!!, hotelList, this)
                         binding.rvHotel.adapter = adapter
                         binding.rvHotel.layoutManager = LinearLayoutManager(context)
-                        Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
-                        for (i in hotelResponse.data!!.data) {
-                            if(i.photo != null){
-                                hotelList.add(
-                                    Hotel(i.location_id, i.name, i.latitude, i.longitude, i.num_reviews?:0,
-                                        i.ranking?: "", i.rating?:0f, i.price_level?: "", i.price?: "", i.photo)
-                                )
+
+                        if(hotelResponse.data != null){
+                            for (i in hotelResponse.data!!) {
+                                if(i.photo != null){
+                                    hotelList.add(
+                                        Hotel(i.location_id, i.location_search_id, i.name, i.latitude, i.longitude, i.num_reviews?:0,
+                                            i.ranking?: "", i.rating?:0f, i.price_level?: "", i.price?: "", i.photo)
+                                    )
+                                }
+
                             }
 
+                            binding.rvHotel.adapter!!.notifyDataSetChanged()
+                        }else{
+                            Toast.makeText(context, "HotelResponse is null", Toast.LENGTH_SHORT).show()
                         }
 
-                        binding.rvHotel.adapter!!.notifyDataSetChanged()
+
+
 
                     }
 

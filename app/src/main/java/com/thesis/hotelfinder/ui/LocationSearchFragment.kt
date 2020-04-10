@@ -27,6 +27,7 @@ import com.thesis.hotelfinder.adapter.OnCountryListener
 import com.thesis.hotelfinder.adapter.StaggeredRecyclerAdapter
 import com.thesis.hotelfinder.databinding.FragmentLocationSearchBinding
 import com.thesis.hotelfinder.model.Country
+import com.thesis.hotelfinder.model.LocationSearch
 import com.thesis.hotelfinder.util.CountryData
 
 
@@ -57,7 +58,8 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
                 if(query == null || query.isEmpty()){
                     Toast.makeText(context, "Query is empty", Toast.LENGTH_SHORT).show()
                 }else{
-                    searchHotels(query)
+                    Log.i("Name:", query.toLowerCase())
+                    searchHotels(query.toLowerCase())
                 }
 
                 return false
@@ -73,7 +75,7 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
 
     private fun searchHotels(query: String){
         locationSearchViewModel.getLocationIdFromLocationSearch(query, "GBP").
-            observe(this, Observer<Resource<LocationSearchResponse>>{ locationSearchResponse ->
+            observe(this, Observer<Resource<LocationSearch>>{ locationSearchResponse ->
 
                 when{
                     locationSearchResponse.status.isLoading() ->{
@@ -81,16 +83,12 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
                     }
                     locationSearchResponse.status.isSuccessful() ->{
                         Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
-                        var bundle = Bundle()
-                        for(i in locationSearchResponse.data!!.data){
-                            if(i.result_type == "geos"){
-                                val locationSearch = i.result_object
-                                Log.i("success" , locationSearch.name + " " + locationSearch.location_id.toString())
-                                bundle = bundleOf("location_id" to locationSearch.location_id)
-                            }
+                        Log.i("isSucc", GsonBuilder().setPrettyPrinting().create().toJson(locationSearchResponse.data))
+                        if(locationSearchResponse.data != null){
+                            val bundle = bundleOf("location_id" to locationSearchResponse.data!!.location_id)
+                            view!!.findNavController().navigate(R.id.action_locationSearchFragment_to_hotelSearchFragment, bundle)
                         }
 
-                        view!!.findNavController().navigate(R.id.action_locationSearchFragment_to_hotelSearchFragment, bundle)
 
                     }
 

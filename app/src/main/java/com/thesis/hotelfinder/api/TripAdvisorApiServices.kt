@@ -1,6 +1,7 @@
 package com.thesis.hotelfinder.api
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.thesis.hotelfinder.api.network.Resource
 import com.thesis.hotelfinder.api.response.HotelDetailsResponse
 import com.thesis.hotelfinder.api.response.HotelResponse

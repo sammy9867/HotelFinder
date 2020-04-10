@@ -1,6 +1,7 @@
 package com.thesis.hotelfinder.api.network
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
@@ -29,7 +30,7 @@ class LiveDataCallAdapterFactory : CallAdapter.Factory() {
         }
 
         // get the Response type
-        val bodyType =      getParameterUpperBound(0, observableType)
+        val bodyType = getParameterUpperBound(0, observableType)
         return LiveDataCallAdapter<Any>(bodyType)
     }
 }

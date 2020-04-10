@@ -20,6 +20,7 @@ import com.thesis.hotelfinder.R
 import com.thesis.hotelfinder.api.network.Resource
 import com.thesis.hotelfinder.api.response.HotelDetailsResponse
 import com.thesis.hotelfinder.databinding.FragmentHotelDetailsBinding
+import com.thesis.hotelfinder.model.HotelDetails
 import com.thesis.hotelfinder.viewmodel.HotelDetailsViewModel
 import com.thesis.hotelfinder.viewmodel.HotelDetailsViewModelFactory
 
@@ -41,7 +42,7 @@ class HotelDetailsFragment : Fragment() {
         hotelDetailsViewModel =  ViewModelProviders.of(this, HotelDetailsViewModelFactory(context!!)).
             get(HotelDetailsViewModel::class.java)
         hotelDetailsViewModel.getHotelsListFromLocationId(getLocationId!!).
-            observe(this, Observer<Resource<HotelDetailsResponse>>{ hotelDetailsResponse ->
+            observe(this, Observer<Resource<HotelDetails>>{ hotelDetailsResponse ->
 
                 when{
                     hotelDetailsResponse.status.isLoading() ->{
@@ -53,22 +54,22 @@ class HotelDetailsFragment : Fragment() {
                         Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
                         val response = hotelDetailsResponse.data
 
-                        for(i in response!!.data){
+                        if(response != null){
 
                             Glide.with(this)
-                                .load(i.photo!!.images.original.url)
+                                .load(response.photo!!.images.original.url)
                                 .apply( RequestOptions()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL))
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL))
                                 .into(binding.hotelDetailsIv)
 
-
-                            binding.hotelDetailsName.text = i.name
-                            binding.hotelDetailsNumReviews.text = i.num_reviews.toString()
-                            binding.hotelDetailsRating.text = i.rating.toString()
-                            binding.hotelDetailsRanking.text = i.ranking
-                            binding.hotelDetailsAddress.text = i.address
-                            binding.hotelDetailsPhone.text = i.phone
+                            binding.hotelDetailsName.text = response.name
+                            binding.hotelDetailsNumReviews.text = response.num_reviews.toString()
+                            binding.hotelDetailsRating.text = response.rating.toString()
+                            binding.hotelDetailsRanking.text = response.ranking
+                            binding.hotelDetailsAddress.text = response.address
+                            binding.hotelDetailsPhone.text = response.phone
                         }
+
                     }
 
                     hotelDetailsResponse.status.isError() ->{
@@ -81,6 +82,5 @@ class HotelDetailsFragment : Fragment() {
 
         return binding.root
     }
-
 
 }

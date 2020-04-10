@@ -12,7 +12,7 @@ inline fun <reified T> Retrofit.create(): T = create(T::class.java)
  * Converts Retrofit [Response] to [Resource] which provides state
  * and data to the UI.
  */
-fun <TypeResult> Response<TypeResult>.toResource(): Resource<TypeResult> {
+fun <ResultType> Response<ResultType>.toResource(): Resource<ResultType> {
     val error = errorBody()?.string()
     return when {
         isSuccessful -> {
