@@ -84,7 +84,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>@MainThread construc
             result.value = newValue
     }
 
-    protected fun onFetchFailed(){}
+    protected open fun onFetchFailed(){}
 
     fun asLiveData(): LiveData<Resource<ResultType>> {
         return result

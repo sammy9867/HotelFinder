@@ -45,7 +45,7 @@ class LocationSearchRepository(context: Context,
                         if(i.result_type == "geos"){
                             val resultObj = i.result_object
                             val locationSearch = LocationSearch(resultObj!!.location_id, query, resultObj.latitude, resultObj.longitude)
-                            locationSearchDao.setLocation(locationSearch)
+                            locationSearchDao.insertLocation(locationSearch)
                             break
                         }
                     }
@@ -57,19 +57,7 @@ class LocationSearchRepository(context: Context,
 
             override fun loadFromDb(): LiveData<LocationSearch> {
                Log.i("REPO", "Loading from DB")
-                val locationLiveData: MutableLiveData<LocationSearch> = MutableLiveData()
-                CoroutineScope(Dispatchers.IO).launch{
-                    val locationSearch =  locationSearchDao.getLocationByName(query)
-                    if(locationSearch != null){
-                        Log.i("REPO", "" + locationSearch.location_id + " " + locationSearch.name)
-                        locationLiveData.postValue(locationSearch)
-                    }else{
-                        Log.i("REPO", "locationSearch is null")
-                        locationLiveData.postValue(null)
-                    }
-                }
-
-                return locationLiveData
+               return  locationSearchDao.getLocationByName(query)
             }
 
             override fun createCall(): LiveData<Resource<LocationSearchResponse>> {

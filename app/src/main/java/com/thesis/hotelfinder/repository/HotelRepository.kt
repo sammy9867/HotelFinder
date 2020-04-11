@@ -85,8 +85,8 @@ class HotelRepository(context: Context,
                         Log.i("REPO", "hotelList is null")
                         hotelListLiveData.postValue(null)
                     }
-                }
 
+                }
                 return hotelListLiveData
             }
 

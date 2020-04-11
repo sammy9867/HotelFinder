@@ -3,7 +3,6 @@ package com.thesis.hotelfinder.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.thesis.hotelfinder.api.network.NetworkBoundResource
 import com.thesis.hotelfinder.api.network.Resource
 import com.thesis.hotelfinder.api.network.ServiceGenerator
@@ -44,30 +43,18 @@ class HotelDetailsRepository(context: Context,
 
             }
 
-            override fun shouldFetch(data: HotelDetails?): Boolean = data == null
+            override fun shouldFetch(data: HotelDetails?): Boolean{
+                return data == null
+            }
 
             override fun loadFromDb(): LiveData<HotelDetails> {
                 Log.i("REPO", "Loading from DB")
-                val hotelDetailsLiveData: MutableLiveData<HotelDetails> = MutableLiveData()
-                CoroutineScope(Dispatchers.IO).launch{
-                    val hotelDetails =  hotelDetailsDao.getHotelDetailsByLocationId(location_id)
-                    if(hotelDetails != null){
-                        Log.i("REPO", "HotelDetails is not null")
-                        hotelDetailsLiveData.postValue(hotelDetails)
-                    }else{
-                        Log.i("REPO", "HotelDetails is null")
-                        hotelDetailsLiveData.postValue(null)
-                    }
-                }
-
-                return hotelDetailsLiveData
-
+                return hotelDetailsDao.getHotelDetailsByLocationId(location_id)
             }
 
             override fun createCall(): LiveData<Resource<HotelDetailsResponse>> {
                 return ServiceGenerator.tripAdvisorApiService.getHotelDetailsListFromLocationId(location_id)
             }
-
 
         }.asLiveData()
     }

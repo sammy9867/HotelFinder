@@ -1,5 +1,6 @@
 package com.thesis.hotelfinder.db.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.thesis.hotelfinder.model.HotelDetails
 
@@ -10,5 +11,5 @@ interface HotelDetailsDao {
     fun insertHotelDetails(hotelDetails: HotelDetails)
 
     @Query("select * from hotel_details_table where location_id = :locationSearchId")
-    fun getHotelDetailsByLocationId(locationSearchId: Int) : HotelDetails?
+    fun getHotelDetailsByLocationId(locationSearchId: Int) : LiveData<HotelDetails>
 }

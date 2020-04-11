@@ -1,5 +1,6 @@
 package com.thesis.hotelfinder.db.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.thesis.hotelfinder.model.Hotel
 
