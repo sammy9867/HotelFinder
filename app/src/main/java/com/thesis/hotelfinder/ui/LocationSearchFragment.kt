@@ -15,6 +15,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.OrientationHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.thesis.hotelfinder.R
@@ -107,7 +109,10 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
         Log.i("CountryList SIZE", countryList.size.toString())
 
         val adapter = StaggeredRecyclerAdapter(context!!, countryList, this)
-        binding.rvPhotos.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        val manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        manager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+        binding.rvPhotos.layoutManager =  manager
+        binding.rvPhotos.setHasFixedSize(true)
         binding.rvPhotos.adapter = adapter
 
     }

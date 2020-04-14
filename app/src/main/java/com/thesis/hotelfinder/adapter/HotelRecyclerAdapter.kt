@@ -25,7 +25,9 @@ class HotelRecyclerAdapter(private val context: Context, private val hotelList: 
     override fun onBindViewHolder(holder: HotelListViewHolder, position: Int) {
         val hotel = hotelList[position]
         holder.hotelNameTv.text = hotel.name
+        holder.hotelNumReviewsTv.text = "(" + hotel.num_reviews.toString() + " reviews)"
         holder.hotelRatingsTv.text = hotel.rating.toString()
+        holder.hotelPriceTv.text = hotel.price.toString()
         Glide.with(this.context)
             .load(hotel.photo!!.images.original.url)
             .apply( RequestOptions()
@@ -40,9 +42,12 @@ class HotelRecyclerAdapter(private val context: Context, private val hotelList: 
     inner class HotelListViewHolder(itemView: View, private val onHotelListener: OnHotelListener):
         RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
-        val hotelNameTv =  itemView.hotelName
-        val hotelRatingsTv = itemView.hotelRating
         val hotelIv = itemView.hotelImageView
+        val hotelNameTv =  itemView.hotelName
+        val hotelNumReviewsTv = itemView.hotelNumReviews
+        val hotelRatingsTv = itemView.hotelRatings
+        val hotelPriceTv = itemView.hotelPrice
+
 
         init{
             itemView.setOnClickListener(this)

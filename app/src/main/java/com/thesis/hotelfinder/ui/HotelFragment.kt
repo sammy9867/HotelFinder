@@ -43,7 +43,33 @@ class HotelFragment : Fragment(), OnHotelListener {
 
         hotelsViewModel =  ViewModelProviders.of(this, MyViewModelFactory(context!!)).
             get(HotelsViewModel::class.java)
-        hotelsViewModel.getHotelsListFromLocationId(getLocationId!!, "2020-04-20", 1, 1).
+
+
+        // List hotels
+        listHotels(binding, getLocationId!!)
+
+        // back button
+        navigateBack(binding)
+
+        // filter button
+
+
+        return binding.root
+    }
+
+
+    private fun navigateBack(binding: FragmentHotelsBinding){
+        binding.hotelBackIb.setOnClickListener{
+            view!!.findNavController().navigate(R.id.action_hotelSearchFragment_to_locationSearchFragment)
+        }
+    }
+
+    private fun filterButton(binding: FragmentHotelsBinding){
+
+    }
+
+    private fun listHotels(binding: FragmentHotelsBinding, getLocationId: Int){
+        hotelsViewModel.getHotelsListFromLocationId(getLocationId, "2020-04-20", 1, 1).
             observe(this, Observer<Resource<List<Hotel>>>{ hotelResponse ->
 
                 when{
@@ -88,11 +114,7 @@ class HotelFragment : Fragment(), OnHotelListener {
                 }
 
             })
-
-
-        return binding.root
     }
-
     override fun onHotelClick(position: Int) {
         val hotel = hotelList[position]
         val bundle = bundleOf("hotel_location_id" to  hotel.location_id)

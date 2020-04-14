@@ -29,7 +29,7 @@ class StaggeredRecyclerAdapter(private val context: Context,
         Glide.with(this.context)
             .load(country.image_url)
             .apply( RequestOptions()
-            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                .diskCacheStrategy(DiskCacheStrategy.ALL))
             .into(holder.countryImage)
 
         holder.countryName.text = country.name

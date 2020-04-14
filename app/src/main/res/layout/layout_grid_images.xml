@@ -4,12 +4,14 @@
                 android:layout_height="wrap_content"
                 xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
             android:id="@+id/countryCardView"
             android:layout_width="match_parent"
-            app:cardCornerRadius="4dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
-            android:layout_height="200dp">
+            android:layout_margin="8dp"
+            >
 
         <RelativeLayout
                 android:layout_width="match_parent"
@@ -18,16 +20,22 @@
             <ImageView
                     android:id="@+id/countryImageView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    />
 
             <TextView
                     android:id="@+id/countryTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/countryImageView"
-                    android:textColor="#000000"/>
+                    android:textStyle="bold"
+                    android:textColor="#FFFF"
+                    android:layout_marginStart="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:paddingBottom="10dp"
+                    />
 
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>

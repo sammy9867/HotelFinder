@@ -12,18 +12,34 @@
         <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/locationSearchTopBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="100dp"
+                android:background="@color/colorAccent"
+                android:gravity="center">
+
             <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/locationSearchToolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorPrimary">
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="#FFFFFF"
+                    android:layout_alignParentBottom="true"
+                    >
 
-                <androidx.appcompat.widget.SearchView
-                        android:id="@+id/locationSearchView"
+                <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                />
+                        android:layout_height="match_parent"
+
+                >
+
+                    <androidx.appcompat.widget.SearchView
+                            android:id="@+id/locationSearchView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:iconifiedByDefault="false"
+                            app:queryHint="Search your destination"
+                    />
+
+                </RelativeLayout>
+
 
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>

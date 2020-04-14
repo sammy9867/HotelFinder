@@ -8,6 +8,68 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+        <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/hotelTopBar"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/colorAccent"
+                android:gravity="center">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/hotelToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/colorAccent"
+            >
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                >
+
+                    <ImageButton
+                            android:id="@+id/hotelBackIb"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                    />
+
+                    <Space
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"/>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hotels"
+                            android:textStyle="bold"
+                            android:textColor="#000000"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:layout_gravity="center_vertical"
+                         />
+
+                    <Space
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"/>
+
+                    <ImageButton
+                            android:id="@+id/hotelFilterIb"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="25dp"
+                            />
+
+                </LinearLayout>
+
+
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/progressBarHotels"
                 android:layout_width="wrap_content"
@@ -23,6 +85,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_below="@id/hotelTopBar"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
 
