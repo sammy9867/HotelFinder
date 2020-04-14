@@ -20,11 +20,10 @@ import com.thesis.hotelfinder.R
 import com.thesis.hotelfinder.adapter.HotelRecyclerAdapter
 import com.thesis.hotelfinder.adapter.OnHotelListener
 import com.thesis.hotelfinder.api.network.Resource
-import com.thesis.hotelfinder.api.response.HotelResponse
 import com.thesis.hotelfinder.databinding.FragmentHotelsBinding
 import com.thesis.hotelfinder.model.Hotel
 import com.thesis.hotelfinder.viewmodel.HotelsViewModel
-import com.thesis.hotelfinder.viewmodel.HotelViewModelFactory
+import com.thesis.hotelfinder.viewmodel.MyViewModelFactory
 
 
 class HotelFragment : Fragment(), OnHotelListener {
@@ -42,7 +41,7 @@ class HotelFragment : Fragment(), OnHotelListener {
         val getLocationId = arguments?.getInt("location_id", 0)
         Log.i("Bundle", getLocationId.toString())
 
-        hotelsViewModel =  ViewModelProviders.of(this, HotelViewModelFactory(context!!)).
+        hotelsViewModel =  ViewModelProviders.of(this, MyViewModelFactory(context!!)).
             get(HotelsViewModel::class.java)
         hotelsViewModel.getHotelsListFromLocationId(getLocationId!!, "2020-04-20", 1, 1).
             observe(this, Observer<Resource<List<Hotel>>>{ hotelResponse ->

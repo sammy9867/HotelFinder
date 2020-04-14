@@ -18,11 +18,10 @@ import com.google.gson.GsonBuilder
 
 import com.thesis.hotelfinder.R
 import com.thesis.hotelfinder.api.network.Resource
-import com.thesis.hotelfinder.api.response.HotelDetailsResponse
 import com.thesis.hotelfinder.databinding.FragmentHotelDetailsBinding
 import com.thesis.hotelfinder.model.HotelDetails
 import com.thesis.hotelfinder.viewmodel.HotelDetailsViewModel
-import com.thesis.hotelfinder.viewmodel.HotelDetailsViewModelFactory
+import com.thesis.hotelfinder.viewmodel.MyViewModelFactory
 
 
 class HotelDetailsFragment : Fragment() {
@@ -39,7 +38,7 @@ class HotelDetailsFragment : Fragment() {
         val getLocationId = arguments?.getInt("hotel_location_id", 0)
         Log.i("HotelBundle", getLocationId.toString())
 
-        hotelDetailsViewModel =  ViewModelProviders.of(this, HotelDetailsViewModelFactory(context!!)).
+        hotelDetailsViewModel =  ViewModelProviders.of(this, MyViewModelFactory(context!!)).
             get(HotelDetailsViewModel::class.java)
         hotelDetailsViewModel.getHotelsListFromLocationId(getLocationId!!).
             observe(this, Observer<Resource<HotelDetails>>{ hotelDetailsResponse ->

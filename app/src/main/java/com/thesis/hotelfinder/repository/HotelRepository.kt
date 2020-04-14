@@ -32,19 +32,6 @@ class HotelRepository(context: Context,
         }
     }
 
-   /* fun getHotelsListFromLocationId(location_id: Int, check_in_date: String,
-                                    number_of_adults: Int, number_of_rooms :Int): LiveData<Resource<HotelResponse>> {
-
-        return object : NetworkBoundResource<HotelResponse>() {
-            override fun createCall(): LiveData<Resource<HotelResponse>> {
-                return ServiceGenerator.tripAdvisorApiService.
-                    getHotelsListFromLocationId(location_id, check_in_date, number_of_adults, number_of_rooms)
-            }
-
-        }.asLiveData()
-    }*/
-
-
     fun getHotelsListFromLocationId(location_id: Int, check_in_date: String,
     number_of_adults: Int, number_of_rooms :Int): LiveData<Resource<List<Hotel>>> {
 
@@ -53,7 +40,6 @@ class HotelRepository(context: Context,
 
             override fun saveCallResult(item: HotelResponse) {
                 Log.i("REPO", "Inserting value into DB")
-                Log.i("REPO data", GsonBuilder().setPrettyPrinting().create().toJson(item.data))
                 CoroutineScope(Dispatchers.IO).launch {
 
                     val hotelList: ArrayList<Hotel> = arrayListOf()

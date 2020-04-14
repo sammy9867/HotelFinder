@@ -19,9 +19,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.thesis.hotelfinder.R
 import com.thesis.hotelfinder.api.network.Resource
-import com.thesis.hotelfinder.api.response.LocationSearchResponse
 import com.thesis.hotelfinder.viewmodel.LocationSearchViewModel
-import com.thesis.hotelfinder.viewmodel.LocationSearchViewModelFactory
 import com.google.gson.GsonBuilder
 import com.thesis.hotelfinder.adapter.OnCountryListener
 import com.thesis.hotelfinder.adapter.StaggeredRecyclerAdapter
@@ -29,6 +27,7 @@ import com.thesis.hotelfinder.databinding.FragmentLocationSearchBinding
 import com.thesis.hotelfinder.model.Country
 import com.thesis.hotelfinder.model.LocationSearch
 import com.thesis.hotelfinder.util.CountryData
+import com.thesis.hotelfinder.viewmodel.MyViewModelFactory
 
 
 class LocationSearchFragment : Fragment(), OnCountryListener {
@@ -43,7 +42,7 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
             inflater, R.layout.fragment_location_search, container, false
         )
 
-        locationSearchViewModel =  ViewModelProviders.of(this, LocationSearchViewModelFactory(context!!)).
+        locationSearchViewModel =  ViewModelProviders.of(this, MyViewModelFactory(context!!)).
             get(LocationSearchViewModel::class.java)
 
         // Search destination
