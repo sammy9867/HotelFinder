@@ -8,6 +8,27 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="hotelAmenityFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="407" />
+                            <option name="y" value="350" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_hotelAmenityFragment_to_hotelFilterFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="hotelDetailsFragment">
                     <value>
                       <LayoutPositions>
@@ -17,26 +38,66 @@
                             <option name="y" value="18" />
                           </Point>
                         </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="hotelSearchFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="185" />
-                            <option name="y" value="-28" />
-                          </Point>
-                        </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_hotelSearchFragment_to_hotelDetailsFragment">
+                            <entry key="action_hotelDetailsFragment_to_hotelFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_hotelSearchFragment_to_locationSearchFragment">
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="hotelFilterFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="168" />
+                            <option name="y" value="354" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_hotelFilterFragment_to_hotelAmenityFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_hotelFilterFragment_to_hotelFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="hotelFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="150" />
+                            <option name="y" value="-12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_hotelFragment_to_hotelDetailsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_hotelFragment_to_hotelFilterFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_hotelFragment_to_locationSearchFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -57,7 +118,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_locationSearchFragment_to_hotelSearchFragment">
+                            <entry key="action_locationSearchFragment_to_hotelFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

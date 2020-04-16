@@ -25,7 +25,11 @@ interface TripAdvisorApiServices{
         @Query("location_id") location_id: Int,
         @Query("checkin") check_in_date: String,
         @Query("adults") number_of_adults: Int,
-        @Query("rooms") number_of_rooms: Int)
+        @Query("rooms") number_of_rooms: Int,
+        @Query("pricesmax") max_price: Int,
+        @Query("hotel_class") hotel_class: Float
+
+    )
       : LiveData<Resource<HotelResponse>>
 
 

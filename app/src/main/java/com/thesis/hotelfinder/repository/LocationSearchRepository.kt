@@ -38,7 +38,6 @@ class LocationSearchRepository(context: Context,
 
             override fun saveCallResult(item: LocationSearchResponse) {
                 Log.i("REPO", "Inserting value into DB")
-                Log.i("isSucc", GsonBuilder().setPrettyPrinting().create().toJson(item.data))
                 CoroutineScope(Dispatchers.IO).launch {
 
                     for(i in item.data){

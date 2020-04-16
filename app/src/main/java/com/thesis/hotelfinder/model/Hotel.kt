@@ -23,6 +23,12 @@ data class Hotel(
     @ColumnInfo(name = "location_search_id", index = true)
     var location_search_id: Int,
 
+    @ColumnInfo(name = "max_price")
+    var max_price: Int,
+
+    @ColumnInfo(name = "hotel_class")
+    var hotel_class: Float,
+
     @ColumnInfo(name = "name")
     @SerializedName("name") var name: String,
 

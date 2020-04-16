@@ -34,6 +34,7 @@
                             android:layout_height="40dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="10dp"
+                            android:src="@drawable/ic_back"
                     />
 
                     <Space

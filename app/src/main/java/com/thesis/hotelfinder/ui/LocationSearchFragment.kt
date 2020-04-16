@@ -87,7 +87,7 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
                         Log.i("isSucc", GsonBuilder().setPrettyPrinting().create().toJson(locationSearchResponse.data))
                         if(locationSearchResponse.data != null){
                             val bundle = bundleOf("location_id" to locationSearchResponse.data!!.location_id)
-                            view!!.findNavController().navigate(R.id.action_locationSearchFragment_to_hotelSearchFragment, bundle)
+                            view!!.findNavController().navigate(R.id.action_locationSearchFragment_to_hotelFragment, bundle)
                         }
 
 

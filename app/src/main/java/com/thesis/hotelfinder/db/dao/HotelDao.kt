@@ -11,6 +11,7 @@ interface HotelDao {
     fun insertHotels(hotels: List<Hotel>)
 
     @Transaction
-    @Query("select * from hotel_table where location_search_id = :locationSearchId")
-    fun getAllHotelsByLocationId(locationSearchId: Int) : List<Hotel>
+    @Query("""select * from hotel_table where location_search_id = :locationSearchId
+                    and max_price = :maxPrice and hotel_class = :hotelClass""" )
+    fun getAllHotelsByLocationId(locationSearchId: Int, maxPrice: Int, hotelClass: Float) : List<Hotel>
 }

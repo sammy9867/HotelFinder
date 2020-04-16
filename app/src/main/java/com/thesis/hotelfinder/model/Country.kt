@@ -1,5 +1,5 @@
 package com.thesis.hotelfinder.model
 
-data class Country(val id: Int,
-                   val name: String,
-                   val image_url: String)
+data class Country(var id: Int,
+                   var name: String,
+                   var image_url: String)
