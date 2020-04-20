@@ -39,7 +39,6 @@ class HotelFragment : Fragment(), OnHotelListener {
             inflater, R.layout.fragment_hotels, container, false
         )
 
-
         val getLocationId = arguments?.getInt("location_id", 0)
         var hotelFilter = arguments?.getParcelable<HotelFilter>("hotel_filter")
         if(hotelFilter == null){

@@ -111,6 +111,10 @@ data class HotelDetails(
     @SerializedName("address")
     var address: String,
 
+    @ColumnInfo(name = "description")
+    @SerializedName("description")
+    var description: String,
+
     @ColumnInfo(name = "price_level")
     @SerializedName("price_level")
     var price_level: String?,
