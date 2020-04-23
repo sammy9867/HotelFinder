@@ -3,4 +3,17 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Amenities -->
+    <string name="free_internet">Free Internet</string>
+    <string name="free_parking">Free Parking</string>
+    <string name="room_service">Room Service</string>
+    <string name="fitness_center">Fitness Center</string>
+    <string name="swimming_pool">Swimming Pool</string>
+    <string name="pets_allowed">Pets Allowed</string>
+    <string name="casino">Casino</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="laundry">Laundry</string>
+    <string name="spa">Spa</string>
+    <string name="non_smoking_hotel">Non-Smoking Hotel</string>
 </resources>

@@ -28,7 +28,6 @@ interface TripAdvisorApiServices{
         @Query("rooms") number_of_rooms: Int,
         @Query("pricesmax") max_price: Int,
         @Query("hotel_class") hotel_class: Float
-
     )
       : LiveData<Resource<HotelResponse>>
 

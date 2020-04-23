@@ -6,4 +6,8 @@
     <color name="textColorPrimary">#442C2E</color>
     <color name="hotelGridBackgroundColor">#FFFFFF</color>
 
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="light_gray">#d3d3d3</color>
+    <color name="dark_gray">#a9a9a9</color>
 </resources>
