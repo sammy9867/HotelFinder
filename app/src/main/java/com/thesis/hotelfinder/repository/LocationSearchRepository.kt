@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
+import com.thesis.hotelfinder.api.network.ApiResponse
 import com.thesis.hotelfinder.api.network.NetworkBoundResource
 import com.thesis.hotelfinder.api.network.Resource
 import com.thesis.hotelfinder.api.network.ServiceGenerator.tripAdvisorApiService
@@ -37,7 +38,7 @@ class LocationSearchRepository(context: Context,
         return object : NetworkBoundResource<LocationSearch, LocationSearchResponse>(AppExecutors.getInstance()) {
 
             override fun saveCallResult(item: LocationSearchResponse) {
-                Log.i("REPO", "Inserting value into DB")
+                //Log.i("REPO", "Inserting value into DB")
                 CoroutineScope(Dispatchers.IO).launch {
 
                     for(i in item.data){
@@ -55,12 +56,12 @@ class LocationSearchRepository(context: Context,
             override fun shouldFetch(data: LocationSearch?) = data == null
 
             override fun loadFromDb(): LiveData<LocationSearch> {
-               Log.i("REPO", "Loading from DB")
+              // Log.i("REPO", "Loading from DB")
                return  locationSearchDao.getLocationByName(query)
             }
 
-            override fun createCall(): LiveData<Resource<LocationSearchResponse>> {
-                Log.i("REPO", "CALLING API")
+            override fun createCall(): LiveData<ApiResponse<LocationSearchResponse>> {
+               // Log.i("REPO", "CALLING API")
                 return tripAdvisorApiService.getLocationIdFromLocationSearch(query, currency)
             }
         }.asLiveData()

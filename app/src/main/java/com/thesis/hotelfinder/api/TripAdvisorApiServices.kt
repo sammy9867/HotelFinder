@@ -2,6 +2,7 @@ package com.thesis.hotelfinder.api
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.thesis.hotelfinder.api.network.ApiResponse
 import com.thesis.hotelfinder.api.network.Resource
 import com.thesis.hotelfinder.api.response.HotelDetailsResponse
 import com.thesis.hotelfinder.api.response.HotelResponse
@@ -17,7 +18,7 @@ interface TripAdvisorApiServices{
     fun getLocationIdFromLocationSearch(
         @Query("query") query: String,
         @Query("currency") currency: String
-    ) : LiveData<Resource<LocationSearchResponse>>
+    ) : LiveData<ApiResponse<LocationSearchResponse>>
 
 
     @GET("hotels/list")
@@ -26,15 +27,17 @@ interface TripAdvisorApiServices{
         @Query("checkin") check_in_date: String,
         @Query("adults") number_of_adults: Int,
         @Query("rooms") number_of_rooms: Int,
+        @Query("nights") number_of_nights: Int,
         @Query("pricesmax") max_price: Int,
-        @Query("hotel_class") hotel_class: Float
+        @Query("hotel_class") hotel_class: Float,
+        @Query("amenities") amenities: String
     )
-      : LiveData<Resource<HotelResponse>>
+      : LiveData<ApiResponse<HotelResponse>>
 
 
     @GET("hotels/get-details")
     fun getHotelDetailsListFromLocationId(
         @Query("location_id") location_id: Int)
-            : LiveData<Resource<HotelDetailsResponse>>
+            : LiveData<ApiResponse<HotelDetailsResponse>>
 
 }

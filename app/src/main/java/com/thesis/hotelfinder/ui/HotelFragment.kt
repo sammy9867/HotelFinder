@@ -29,20 +29,28 @@ import com.thesis.hotelfinder.viewmodel.MyViewModelFactory
 
 class HotelFragment : Fragment(), OnHotelListener {
 
+    private lateinit var binding: FragmentHotelsBinding
     private lateinit var hotelsViewModel: HotelsViewModel
     private var hotelList: MutableList<Hotel> = mutableListOf()
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
 
         // binding object that holds all views in the given fragment
-        val binding: FragmentHotelsBinding = DataBindingUtil.inflate(
+        val dataBinding: FragmentHotelsBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_hotels, container, false
         )
+        binding = dataBinding
+
+        return dataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.lifecycleOwner = viewLifecycleOwner
 
         val getLocationId = arguments?.getInt("location_id", 0)
         var hotelFilter = arguments?.getParcelable<HotelFilter>("hotel_filter")
         if(hotelFilter == null){
-            Log.i("hotel Filter", "NULL")
+            //Log.i("hotel Filter", "NULL")
             hotelFilter = HotelFilter(30, 3.0f)
         }
 
@@ -60,9 +68,7 @@ class HotelFragment : Fragment(), OnHotelListener {
         // filter button
         filterButton(binding, getLocationId)
 
-        return binding.root
     }
-
 
     private fun navigateBack(binding: FragmentHotelsBinding){
         binding.hotelBackIb.setOnClickListener{
@@ -78,54 +84,36 @@ class HotelFragment : Fragment(), OnHotelListener {
     }
 
     private fun listHotels(binding: FragmentHotelsBinding, getLocationId: Int, hotelFilter: HotelFilter){
-        Log.i("hotel Filter HAHA", "" +hotelFilter.max_price + " " + hotelFilter.hotel_class)
-        hotelsViewModel.getHotelsListFromLocationId(getLocationId, "2020-04-20", 1, 1,
-        hotelFilter.max_price, hotelFilter.hotel_class).
+      //  Log.i("hotel Filter HAHA", "" +hotelFilter.max_price + " " + hotelFilter.hotel_class)
+
+        hotelsViewModel.getHotelsListFromLocationId(getLocationId, "2020-05-20", 1, 1, 1,
+        hotelFilter.max_price, hotelFilter.hotel_class, "free_internet").
             observe(this, Observer<Resource<List<Hotel>>>{ hotelResponse ->
 
-                when{
-                    hotelResponse.status.isLoading() ->{
-                        binding.progressBarHotels.show()
-                    }
+                if(hotelResponse?.data != null){
+                    binding.progressBarHotels.hide()
 
-                    hotelResponse.status.isSuccessful() -> {
-                        binding.progressBarHotels.hide()
-                        val adapter = HotelRecyclerAdapter(context!!, hotelList, this)
-                        binding.rvHotel.adapter = adapter
-                        binding.rvHotel.layoutManager = LinearLayoutManager(context)
+                    val adapter = HotelRecyclerAdapter(context!!, hotelList, this)
+                    binding.rvHotel.adapter = adapter
+                    binding.rvHotel.layoutManager = LinearLayoutManager(context)
 
-                        if(hotelResponse.data != null){
-                            for (i in hotelResponse.data!!) {
-                                if(i.photo != null){
-                                    hotelList.add(
-                                        Hotel(i.location_id, i.location_search_id, i.max_price, i.hotel_class, i.name, i.latitude, i.longitude, i.num_reviews?:0,
-                                            i.ranking?: "", i.rating?:0f, i.price_level?: "", i.price?: "", i.photo)
-                                    )
-                                }
-
-                            }
-
-                            binding.rvHotel.adapter!!.notifyDataSetChanged()
-                        }else{
-                            Toast.makeText(context, "HotelResponse is null", Toast.LENGTH_SHORT).show()
+                    for(i in hotelResponse.data){
+                        if(i.photo != null){
+                            hotelList.add(
+                                Hotel(i.location_id, i.location_search_id, i.max_price, i.hotel_class, i.name, i.latitude, i.longitude, i.num_reviews?:0,
+                                    i.ranking?: "", i.rating?:0f, i.price_level?: "", i.price?: "", i.photo)
+                            )
                         }
-
-
-
-
                     }
 
-
-
-                    hotelResponse.status.isError() ->{
-                        binding.progressBarHotels.hide()
-                        Toast.makeText(context, "isError", Toast.LENGTH_SHORT).show()
-                        Log.i("error", GsonBuilder().setPrettyPrinting().create().toJson(hotelResponse.errorMessage))
-                    }
+                    binding.rvHotel.adapter!!.notifyDataSetChanged()
+                }else{
+                    binding.progressBarHotels.show()
+                    Log.i("Fragment error", GsonBuilder().setPrettyPrinting().create().toJson(hotelResponse.errorMessage))
                 }
-
             })
     }
+
     override fun onHotelClick(position: Int) {
         val hotel = hotelList[position]
         val bundle = bundleOf("hotel_location_id" to  hotel.location_id)

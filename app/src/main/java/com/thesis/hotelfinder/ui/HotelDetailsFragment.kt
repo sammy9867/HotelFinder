@@ -31,15 +31,24 @@ import com.thesis.hotelfinder.viewmodel.MyViewModelFactory
 
 class HotelDetailsFragment : Fragment() {
 
+    private lateinit var binding: FragmentHotelDetailsBinding
+
     private lateinit var hotelDetailsViewModel: HotelDetailsViewModel
     private val amenityFilterList = AmenityFilterData().getAmenityFilterList()
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // binding object that holds all views in the given fragment
-        val binding : FragmentHotelDetailsBinding =DataBindingUtil.inflate(
+        val dataBinding : FragmentHotelDetailsBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_hotel_details, container, false
         )
+        binding = dataBinding
+
+        return dataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.lifecycleOwner = viewLifecycleOwner
 
         val getLocationId = arguments?.getInt("hotel_location_id", 0)
         Log.i("HotelBundle", getLocationId.toString())
@@ -49,63 +58,44 @@ class HotelDetailsFragment : Fragment() {
         hotelDetailsViewModel.getHotelsListFromLocationId(getLocationId!!).
             observe(this, Observer<Resource<HotelDetails>>{ hotelDetailsResponse ->
 
-                when{
-                    hotelDetailsResponse.status.isLoading() ->{
+                if(hotelDetailsResponse?.data != null){
+                    Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
+                    val response = hotelDetailsResponse.data
+                    Glide.with(this)
+                        .load(response.photo!!.images.original.url)
+                        .apply( RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                        .into(binding.hotelDetailsIv)
 
-                    }
+                    binding.hotelDetailsName.text = response.name
+                    binding.hotelDetailsAddress.text = response.address
+                    binding.hotelDetailsPhone.text = response.phone
+                    binding.hotelDetailsRanking.text = response.ranking
+                    binding.hotelDetailsRating.text = response.rating.toString()
+                    binding.hotelDetailsNumReviews.text = "("  +response.num_reviews.toString() + " reviews)"
+                    binding.hotelDetailsDescription.text = response.description
 
-                    hotelDetailsResponse.status.isSuccessful() -> {
+                    val amenityList = mutableListOf<AmenityFilter>()
+                    val adapter = AmenityRecyclerAdapter(context!!, amenityList)
+                    binding.rvAmenity.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    binding.rvAmenity.adapter = adapter
 
-                        Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
-                        val response = hotelDetailsResponse.data
-
-                        if(response != null){
-
-                            Glide.with(this)
-                                .load(response.photo!!.images.original.url)
-                                .apply( RequestOptions()
-                                    .diskCacheStrategy(DiskCacheStrategy.ALL))
-                                .into(binding.hotelDetailsIv)
-
-                            binding.hotelDetailsName.text = response.name
-                            binding.hotelDetailsAddress.text = response.address
-                            binding.hotelDetailsPhone.text = response.phone
-                            binding.hotelDetailsRanking.text = response.ranking
-                            binding.hotelDetailsRating.text = response.rating.toString()
-                            binding.hotelDetailsNumReviews.text = "("  +response.num_reviews.toString() + " reviews)"
-                            binding.hotelDetailsDescription.text = response.description
-
-                            val amenityList = mutableListOf<AmenityFilter>()
-                            val adapter = AmenityRecyclerAdapter(context!!, amenityList)
-                            binding.rvAmenity.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                            binding.rvAmenity.adapter = adapter
-
-
-
-                            for(amenityFilter in amenityFilterList){
-                                for(amenityName in response.amenities){
-                                    if(amenityFilter.id == amenityName.key){
-                                        amenityList.add(amenityFilter)
-                                        Log.i("Amenity", amenityFilter.name + " " + amenityFilter.icon.toString())
-                                    }
-                                }
+                    for(amenityFilter in amenityFilterList){
+                        for(amenityName in response.amenities){
+                            if(amenityFilter.id == amenityName.key){
+                                amenityList.add(amenityFilter)
+                                Log.i("Amenity", amenityFilter.name + " " + amenityFilter.icon.toString())
                             }
-
-                            binding.rvAmenity.adapter!!.notifyDataSetChanged()
-
-
                         }
                     }
 
-                    hotelDetailsResponse.status.isError() ->{
-                        Toast.makeText(context, "isError", Toast.LENGTH_SHORT).show()
-                        Log.i("error", GsonBuilder().setPrettyPrinting().create().toJson(hotelDetailsResponse.errorMessage))
-                    }
+                    binding.rvAmenity.adapter!!.notifyDataSetChanged()
+                }else{
+                    Log.i("error", "HotelDetails")
                 }
 
             })
 
-        return binding.root
     }
 
 }

@@ -17,7 +17,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>@MainThread construc
     private val result = MediatorLiveData<Resource<ResultType>>()
 
     init{
-        result.value = Resource.loading()
+        result.value = Resource.loading(null)
         val dbSource = this.loadFromDb()
 
         result.addSource(dbSource) { typeResult->
@@ -37,41 +37,41 @@ abstract class NetworkBoundResource<ResultType, RequestType>@MainThread construc
 
     private fun fetchFromNetwork(dbSource: LiveData<ResultType>){
         val apiResponse = createCall()
-
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
-        result.addSource(dbSource){
-           setValue(Resource.loading())
+        result.addSource(dbSource){ newData->
+           setValue(Resource.loading(newData))
         }
 
         result.addSource(apiResponse){response ->
-
-            result.removeSource(dbSource)
             result.removeSource(apiResponse)
+            result.removeSource(dbSource)
 
-            response?.apply {
-
-                if(status.isSuccessful()){
-
+            when (response){
+                is ApiSuccessResponse -> {
                     appExecutors.diskIO().execute {
-                        // Process the response on a thread
-                        processResponse(this)?.let { typeRequest->
-                            saveCallResult(typeRequest)
-                        }
+                        saveCallResult(processResponse(response))
 
                         appExecutors.mainThread().execute {
-                            // we specially request a new live data,
-                            // otherwise we will get immediately last cached value,
-                            // which may not be updated with latest results received from network.
-                            result.addSource(loadFromDb()) {typeResult->
-                                setValue(Resource.success(typeResult))
+                            result.addSource(loadFromDb()) { newData ->
+                                setValue(Resource.success(newData))
                             }
                         }
                     }
+                }
 
-                }else{
+                is ApiEmptyResponse -> {
+                    appExecutors.mainThread().execute {
+                        // reload from disk whatever we had
+                        result.addSource(loadFromDb()) { newData ->
+                            setValue(Resource.success(newData))
+                        }
+                    }
+                }
+
+                is ApiErrorResponse -> {
                     onFetchFailed()
-                    result.addSource(dbSource) {
-                        result.setValue(Resource.error(errorMessage))
+                    result.addSource(dbSource) { newData ->
+                        setValue(Resource.error(response.errorMessage, newData))
                     }
                 }
             }
@@ -86,14 +86,10 @@ abstract class NetworkBoundResource<ResultType, RequestType>@MainThread construc
 
     protected open fun onFetchFailed(){}
 
-    fun asLiveData(): LiveData<Resource<ResultType>> {
-        return result
-    }
+    fun asLiveData() = result as LiveData<Resource<ResultType>>
 
     @WorkerThread
-    private fun processResponse(response: Resource<RequestType>): RequestType?{
-        return response.data
-    }
+    private fun processResponse(response: ApiSuccessResponse<RequestType>) = response.body
 
     // To save the result of the API response into the database.
     @WorkerThread
@@ -110,6 +106,6 @@ abstract class NetworkBoundResource<ResultType, RequestType>@MainThread construc
 
     // Called to create the API call.
     @MainThread
-    protected abstract fun createCall(): LiveData<Resource<RequestType>>
+    protected abstract fun createCall(): LiveData<ApiResponse<RequestType>>
 
 }

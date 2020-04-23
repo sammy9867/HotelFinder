@@ -14,6 +14,6 @@ interface LocationSearchDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLocation(locationSearch: LocationSearch)
 
-    @Query("select * from location_search_table where name=:name")
+    @Query("SELECT * FROM location_search_table WHERE name=:name")
     fun getLocationByName(name: String) : LiveData<LocationSearch>
 }

@@ -18,32 +18,39 @@ import com.thesis.hotelfinder.model.HotelFilter
 
 class HotelFilterFragment : Fragment() {
 
+    private lateinit var binding: FragmentHotelFilterBinding
     lateinit var hotelFilter: HotelFilter
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         // binding object that holds all views in the given fragment
-        val binding: FragmentHotelFilterBinding = DataBindingUtil.inflate(
+        val dataBinding: FragmentHotelFilterBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_hotel_filter, container, false
         )
+        binding = dataBinding
+
+        return dataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        binding.lifecycleOwner = viewLifecycleOwner
 
         // Apply Default Filter
         defaultFilter()
 
-        val location_id = arguments?.getInt("location_id", 0)
+        val locationId = arguments?.getInt("location_id", 0)
         // Apply Filters
-        applyFilters(binding, location_id!!)
+        applyFilters(binding, locationId!!)
 
         // Reset Filters
         resetFilters(binding)
 
         // Navigate back to HotelFragment
-        filterNavigateBack(binding, location_id)
+        filterNavigateBack(binding, locationId)
 
         // Navigate to HotelAmenityFragment
-        filterNavigateToAmenities(binding, location_id)
+        filterNavigateToAmenities(binding, locationId)
 
-        return binding.root
     }
 
     private fun applyFilters(binding: FragmentHotelFilterBinding, location_id: Int){
@@ -69,7 +76,7 @@ class HotelFilterFragment : Fragment() {
         val max_price = binding.filterPriceRange.maximumValue.toInt()
         val hotel_class = binding.filterHotelClass.rating
 
-        Log.i("HotelFilter", ""+max_price + " " + hotel_class)
+      //  Log.i("HotelFilter", ""+max_price + " " + hotel_class)
         hotelFilter = HotelFilter( max_price, hotel_class)
     }
 
@@ -85,7 +92,6 @@ class HotelFilterFragment : Fragment() {
             bundlesForHotelAmenityFragment(location_id)
         }
     }
-
 
     /**Bundles**/
     private fun bundlesForHotelFragment(location_id: Int){

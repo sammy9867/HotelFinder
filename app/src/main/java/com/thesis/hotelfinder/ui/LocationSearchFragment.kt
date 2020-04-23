@@ -37,12 +37,21 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
     private lateinit var locationSearchViewModel: LocationSearchViewModel
     private var countryList : MutableList<Country> = mutableListOf()
 
+    private lateinit var binding: FragmentLocationSearchBinding
+
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // binding object that holds all views in the given fragment
-        val binding : FragmentLocationSearchBinding = DataBindingUtil.inflate(
+        val dataBinding : FragmentLocationSearchBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_location_search, container, false
         )
+        binding = dataBinding
+        return dataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        binding.lifecycleOwner = viewLifecycleOwner
 
         locationSearchViewModel =  ViewModelProviders.of(this, MyViewModelFactory(context!!)).
             get(LocationSearchViewModel::class.java)
@@ -65,43 +74,23 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
 
                 return false
             }
-
         })
 
         // Recycler view for unSplash images
         getPhotos(binding)
-
-        return binding.root
     }
 
     private fun searchHotels(query: String){
         locationSearchViewModel.getLocationIdFromLocationSearch(query, "GBP").
-            observe(this, Observer<Resource<LocationSearch>>{ locationSearchResponse ->
+            observe(viewLifecycleOwner, Observer<Resource<LocationSearch>>{ locationSearchResponse ->
 
-                when{
-                    locationSearchResponse.status.isLoading() ->{
-                        Toast.makeText(context,"isLoading", Toast.LENGTH_SHORT).show()
-                    }
-                    locationSearchResponse.status.isSuccessful() ->{
-                        Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
-                        Log.i("isSucc", GsonBuilder().setPrettyPrinting().create().toJson(locationSearchResponse.data))
-                        if(locationSearchResponse.data != null){
-                            val bundle = bundleOf("location_id" to locationSearchResponse.data!!.location_id)
-                            view!!.findNavController().navigate(R.id.action_locationSearchFragment_to_hotelFragment, bundle)
-                        }
-
-
-                    }
-
-                    locationSearchResponse.status.isError() ->{
-                        Toast.makeText(context, "isError", Toast.LENGTH_SHORT).show()
-                        Log.i("error", GsonBuilder().setPrettyPrinting().create().toJson(locationSearchResponse.errorMessage))
-                    }
+                if(locationSearchResponse?.data != null){
+                    val bundle = bundleOf("location_id" to locationSearchResponse.data.location_id)
+                    view!!.findNavController().navigate(R.id.action_locationSearchFragment_to_hotelFragment, bundle)
+                }else{
+                    Log.i("isError", "LocationSearchResponse")
                 }
-
             })
-
-
     }
 
     private fun getPhotos(binding : FragmentLocationSearchBinding){

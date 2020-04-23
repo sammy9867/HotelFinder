@@ -12,7 +12,7 @@ import com.thesis.hotelfinder.db.dao.LocationSearchDao
 import com.thesis.hotelfinder.model.*
 
 @Database(entities = [LocationSearch::class, Hotel::class, Photo::class,  Images::class,
-Original::class, HotelDetails::class, Award::class, Amenity::class], version = 1, exportSchema = false)
+Original::class, HotelDetails::class, Amenity::class], version = 1, exportSchema = false)
 @TypeConverters(MyConverter::class)
 abstract class AppDatabase: RoomDatabase(){
 

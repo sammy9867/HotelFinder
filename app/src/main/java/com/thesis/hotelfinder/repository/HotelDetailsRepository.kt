@@ -3,6 +3,7 @@ package com.thesis.hotelfinder.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.thesis.hotelfinder.api.network.ApiResponse
 import com.thesis.hotelfinder.api.network.NetworkBoundResource
 import com.thesis.hotelfinder.api.network.Resource
 import com.thesis.hotelfinder.api.network.ServiceGenerator
@@ -40,7 +41,6 @@ class HotelDetailsRepository(context: Context,
                 CoroutineScope(Dispatchers.IO).launch {
                     hotelDetailsDao.insertHotelDetails(item.data[0])
                 }
-
             }
 
             override fun shouldFetch(data: HotelDetails?): Boolean{
@@ -52,7 +52,7 @@ class HotelDetailsRepository(context: Context,
                 return hotelDetailsDao.getHotelDetailsByLocationId(location_id)
             }
 
-            override fun createCall(): LiveData<Resource<HotelDetailsResponse>> {
+            override fun createCall(): LiveData<ApiResponse<HotelDetailsResponse>> {
                 return ServiceGenerator.tripAdvisorApiService.getHotelDetailsListFromLocationId(location_id)
             }
 

@@ -10,6 +10,6 @@ interface HotelDetailsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertHotelDetails(hotelDetails: HotelDetails)
 
-    @Query("select * from hotel_details_table where location_id = :locationSearchId")
+    @Query("SELECT * FROM hotel_details_table WHERE location_id = :locationSearchId")
     fun getHotelDetailsByLocationId(locationSearchId: Int) : LiveData<HotelDetails>
 }

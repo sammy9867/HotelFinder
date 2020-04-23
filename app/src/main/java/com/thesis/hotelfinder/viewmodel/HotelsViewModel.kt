@@ -13,10 +13,10 @@ class HotelsViewModel(context: Context) : ViewModel(){
     private var hotelsRepository : HotelRepository = HotelRepository.getInstance(context)
 
     fun getHotelsListFromLocationId(location_id: Int, check_in_date: String,
-                                    number_of_adults: Int, number_of_rooms :Int,
-                                    max_price: Int, hotel_class: Float) : LiveData<Resource<List<Hotel>>> {
+                                    number_of_adults: Int, number_of_rooms :Int, number_of_nights: Int,
+                                    max_price: Int, hotel_class: Float, amenities: String) : LiveData<Resource<List<Hotel>>> {
         return hotelsRepository.getHotelsListFromLocationId(location_id, check_in_date, number_of_adults, number_of_rooms,
-            max_price, hotel_class)
+            number_of_nights, max_price, hotel_class, amenities)
     }
 
 

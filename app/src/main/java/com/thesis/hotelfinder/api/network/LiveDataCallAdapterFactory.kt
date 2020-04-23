@@ -1,7 +1,6 @@
 package com.thesis.hotelfinder.api.network
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
@@ -19,7 +18,7 @@ class LiveDataCallAdapterFactory : CallAdapter.Factory() {
         // Type that LiveData is wrapping
         val observableType = getParameterUpperBound(0, returnType as ParameterizedType)
         val rawObservableType = getRawType(observableType)
-        if (rawObservableType != Resource::class.java) {
+        if (rawObservableType != ApiResponse::class.java) {
             throw IllegalArgumentException("type must be a resource")
         }
 

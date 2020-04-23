@@ -3,15 +3,11 @@ package com.thesis.hotelfinder.api.network
 /**
  * A generic class holding the call status
  */
-data class Resource<T>(
-    var status: Status,
-    var data: T? = null,
-    var errorMessage: String? = null
-){
+data class Resource<out T>(val status: Status, val data: T?, val errorMessage: String?){
     companion object{
-        fun <T> success(data: T): Resource<T> = Resource(Status.SUCCESS, data)
-        fun <T> loading(): Resource<T> = Resource(Status.LOADING)
-        fun <T> error(message: String?): Resource<T> = Resource(Status.ERROR, errorMessage = message)
+        fun <T> success(data: T?): Resource<T> = Resource(Status.SUCCESS, data, null)
+        fun <T> loading(data: T?): Resource<T> = Resource(Status.LOADING, data, null)
+        fun <T> error(message: String, data: T?): Resource<T> = Resource(Status.ERROR, data, message)
     }
 }
 

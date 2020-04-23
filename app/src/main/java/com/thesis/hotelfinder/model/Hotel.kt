@@ -105,15 +105,15 @@ data class HotelDetails(
 
     @ColumnInfo(name = "email")
     @SerializedName("email")
-    var email: String,
+    var email: String?,
 
     @ColumnInfo(name = "address")
     @SerializedName("address")
-    var address: String,
+    var address: String?,
 
     @ColumnInfo(name = "description")
     @SerializedName("description")
-    var description: String,
+    var description: String?,
 
     @ColumnInfo(name = "price_level")
     @SerializedName("price_level")
@@ -127,11 +127,6 @@ data class HotelDetails(
     @SerializedName("photo")
     @TypeConverters(MyConverter::class)
     var photo: Photo?,
-
-    @ColumnInfo(name = "awards")
-    @SerializedName("awards")
-    @TypeConverters(MyConverter::class)
-    var awards: List<Award>,
 
     @ColumnInfo(name = "amenities")
     @SerializedName("amenities")
@@ -174,22 +169,6 @@ data class Original(
     @SerializedName("height")
     var height: String): Parcelable
 
-
-@Parcelize
-@Entity(tableName = "awards_table")
-data class Award(
-    @PrimaryKey
-    @ColumnInfo(name = "award_type")
-    @SerializedName("award_type")
-    var award_type: String,
-
-    @ColumnInfo(name = "display_name")
-    @SerializedName("display_name")
-    var display_name: String,
-
-    @ColumnInfo(name = "year")
-    @SerializedName("year")
-    var year: String): Parcelable
 
 @Parcelize
 @Entity(tableName = "amenities_table")

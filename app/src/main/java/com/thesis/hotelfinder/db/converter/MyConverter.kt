@@ -58,22 +58,6 @@ class MyConverter{
 
         @TypeConverter
         @JvmStatic
-        fun awardsfromString(value: String): List<Award>? {
-            val awards =  object: TypeToken< List<Award>?>(){}.type
-            return  Gson().fromJson(value, awards)
-        }
-
-
-        @TypeConverter
-        @JvmStatic
-        fun stringfromAwards(awards:  List<Award>?): String {
-            val gson =  Gson()
-            return gson.toJson(awards)
-        }
-
-
-        @TypeConverter
-        @JvmStatic
         fun amenitiesfromString(value: String): List<Amenity>? {
             val amenities =  object: TypeToken< List<Amenity>?>(){}.type
             return  Gson().fromJson(value, amenities)
