@@ -11,11 +11,11 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.google.gson.GsonBuilder
 
 import com.thesis.hotelfinder.R
 import com.thesis.hotelfinder.adapter.AmenityRecyclerAdapter
@@ -50,12 +50,14 @@ class HotelDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val getLocationId = arguments?.getInt("hotel_location_id", 0)
-        Log.i("HotelBundle", getLocationId.toString())
+        val hotelLocationId = arguments?.getInt("hotel_location_id")
+        Log.i("HotelBundle", hotelLocationId.toString())
+
+        filterNavigateBack(binding)
 
         hotelDetailsViewModel =  ViewModelProviders.of(this, MyViewModelFactory(context!!)).
             get(HotelDetailsViewModel::class.java)
-        hotelDetailsViewModel.getHotelsListFromLocationId(getLocationId!!).
+        hotelDetailsViewModel.getHotelsListFromLocationId(hotelLocationId!!).
             observe(this, Observer<Resource<HotelDetails>>{ hotelDetailsResponse ->
 
                 if(hotelDetailsResponse?.data != null){
@@ -97,5 +99,12 @@ class HotelDetailsFragment : Fragment() {
             })
 
     }
+
+    private fun filterNavigateBack(binding: FragmentHotelDetailsBinding){
+        binding.hotelDetailsBackIb.setOnClickListener{
+            view!!.findNavController().navigate(R.id.action_hotelDetailsFragment_to_hotelFragment)
+        }
+    }
+
 
 }

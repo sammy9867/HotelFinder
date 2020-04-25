@@ -30,7 +30,7 @@ interface TripAdvisorApiServices{
         @Query("nights") number_of_nights: Int,
         @Query("pricesmax") max_price: Int,
         @Query("hotel_class") hotel_class: Float,
-        @Query("amenities") amenities: String
+        @Query("amenities") amenityInput: String
     )
       : LiveData<ApiResponse<HotelResponse>>
 

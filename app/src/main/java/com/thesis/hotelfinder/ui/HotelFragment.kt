@@ -25,12 +25,16 @@ import com.thesis.hotelfinder.model.Hotel
 import com.thesis.hotelfinder.model.HotelFilter
 import com.thesis.hotelfinder.viewmodel.HotelsViewModel
 import com.thesis.hotelfinder.viewmodel.MyViewModelFactory
+import com.thesis.hotelfinder.viewmodel.SharedViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class HotelFragment : Fragment(), OnHotelListener {
 
     private lateinit var binding: FragmentHotelsBinding
     private lateinit var hotelsViewModel: HotelsViewModel
+    private lateinit var sharedViewModel: SharedViewModel
     private var hotelList: MutableList<Hotel> = mutableListOf()
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
@@ -47,26 +51,34 @@ class HotelFragment : Fragment(), OnHotelListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val getLocationId = arguments?.getInt("location_id", 0)
-        var hotelFilter = arguments?.getParcelable<HotelFilter>("hotel_filter")
-        if(hotelFilter == null){
-            //Log.i("hotel Filter", "NULL")
-            hotelFilter = HotelFilter(30, 3.0f)
-        }
 
-        Log.i("Bundle", getLocationId.toString())
+        val hotelFilter = HotelFilter(30, 3.0f)
+
+
 
         hotelsViewModel =  ViewModelProviders.of(this, MyViewModelFactory(context!!)).
             get(HotelsViewModel::class.java)
+        sharedViewModel =  ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
+
+        var locationId = 0
+        if(sharedViewModel.locationId.value != null){
+            Log.i("SharedViewModel", "is not null")
+            locationId = sharedViewModel.locationId.value!!
+            Log.i("SharedViewModel", locationId.toString())
+        }else{
+            Log.i("SharedViewModel", "is null")
+        }
+
+
 
         // List hotels
-        listHotels(binding, getLocationId!!, hotelFilter)
+        listHotels(binding, locationId, hotelFilter)
 
         // back button
         navigateBack(binding)
 
         // filter button
-        filterButton(binding, getLocationId)
+        filterButton(binding, locationId)
 
     }
 
@@ -78,16 +90,26 @@ class HotelFragment : Fragment(), OnHotelListener {
 
     private fun filterButton(binding: FragmentHotelsBinding, getLocationId: Int){
         binding.hotelFilterIb.setOnClickListener{
-            val bundle = bundleOf("location_id" to  getLocationId)
-            view!!.findNavController().navigate(R.id.action_hotelFragment_to_hotelFilterFragment, bundle)
+            view!!.findNavController().navigate(R.id.action_hotelFragment_to_hotelFilterFragment)
         }
     }
 
     private fun listHotels(binding: FragmentHotelsBinding, getLocationId: Int, hotelFilter: HotelFilter){
-      //  Log.i("hotel Filter HAHA", "" +hotelFilter.max_price + " " + hotelFilter.hotel_class)
 
-        hotelsViewModel.getHotelsListFromLocationId(getLocationId, "2020-05-20", 1, 1, 1,
-        hotelFilter.max_price, hotelFilter.hotel_class, "free_internet").
+        defaultFilter()
+        val checkIn = sharedViewModel.checkIn.value
+        val adults = sharedViewModel.adults.value
+        val rooms = sharedViewModel.rooms.value
+        val nights = sharedViewModel.nights.value
+        val maxPrice = sharedViewModel.maxPrice.value
+        val hotelClass =  sharedViewModel.hotelClass.value
+        val amenities = sharedViewModel.amenities.value
+
+        Log.i("HotelFilter", "" + checkIn + " " + adults + " " + rooms + " " + nights)
+        Log.i("HotelFilter", "" + maxPrice + " " + hotelClass + " " + amenities)
+
+        hotelsViewModel.getHotelsListFromLocationId(getLocationId, checkIn!!, adults!!, rooms!!, nights!!,
+        maxPrice!!, hotelClass!!, amenities!!).
             observe(this, Observer<Resource<List<Hotel>>>{ hotelResponse ->
 
                 if(hotelResponse?.data != null){
@@ -100,11 +122,14 @@ class HotelFragment : Fragment(), OnHotelListener {
                     for(i in hotelResponse.data){
                         if(i.photo != null){
                             hotelList.add(
-                                Hotel(i.location_id, i.location_search_id, i.max_price, i.hotel_class, i.name, i.latitude, i.longitude, i.num_reviews?:0,
+                                Hotel(i.location_id, i.location_search_id, i.checkIn, i.adults, i.rooms, i.nights,
+                                    i.max_price, i.hotel_class, i.amenityInput,
+                                    i.name, i.latitude, i.longitude, i.num_reviews?:0,
                                     i.ranking?: "", i.rating?:0f, i.price_level?: "", i.price?: "", i.photo)
                             )
                         }
                     }
+
 
                     binding.rvHotel.adapter!!.notifyDataSetChanged()
                 }else{
@@ -112,6 +137,46 @@ class HotelFragment : Fragment(), OnHotelListener {
                     Log.i("Fragment error", GsonBuilder().setPrettyPrinting().create().toJson(hotelResponse.errorMessage))
                 }
             })
+    }
+
+    private fun defaultFilter(){
+
+        if(sharedViewModel.checkIn.value == null){
+            Log.i("HotelFilter", "is Null")
+            val formatterCurrDateTv  =  SimpleDateFormat("yyyy-MM-dd")
+            sharedViewModel.setCheckIn(formatterCurrDateTv.format(Date()).toString())
+        }
+
+        if(sharedViewModel.adults.value == null){
+            Log.i("HotelFilter", "is Null")
+            sharedViewModel.setAdults(1)
+        }
+
+        if(sharedViewModel.rooms.value == null){
+            Log.i("HotelFilter", "is Null")
+            sharedViewModel.setRooms(1)
+        }
+
+        if(sharedViewModel.nights.value == null){
+            Log.i("HotelFilter", "is Null")
+            sharedViewModel.setNights(1)
+        }
+
+        if(sharedViewModel.maxPrice.value == null){
+            Log.i("HotelFilter", "is Null")
+            sharedViewModel.setMaxPrice(30)
+        }
+
+        if(sharedViewModel.hotelClass.value == null){
+            Log.i("HotelFilter", "is Null")
+            sharedViewModel.setHotelClass(3.0f)
+        }
+
+        if(sharedViewModel.amenities.value == null){
+            Log.i("HotelFilter", "is Null")
+            sharedViewModel.setAmenities("")
+        }
+
     }
 
     override fun onHotelClick(position: Int) {

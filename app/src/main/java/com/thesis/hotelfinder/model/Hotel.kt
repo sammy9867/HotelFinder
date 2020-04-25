@@ -23,11 +23,26 @@ data class Hotel(
     @ColumnInfo(name = "location_search_id", index = true)
     var location_search_id: Int,
 
+    @ColumnInfo(name = "checkIn")
+    var checkIn: String,
+
+    @ColumnInfo(name = "adults")
+    var adults: Int,
+
+    @ColumnInfo(name = "rooms")
+    var rooms: Int,
+
+    @ColumnInfo(name = "nights")
+    var nights: Int,
+
     @ColumnInfo(name = "max_price")
     var max_price: Int,
 
     @ColumnInfo(name = "hotel_class")
     var hotel_class: Float,
+
+    @ColumnInfo(name = "amenityInput")
+    var amenityInput: String,
 
     @ColumnInfo(name = "name")
     @SerializedName("name") var name: String,
@@ -101,7 +116,7 @@ data class HotelDetails(
 
     @ColumnInfo(name = "website")
     @SerializedName("website")
-    var website: String,
+    var website: String?,
 
     @ColumnInfo(name = "email")
     @SerializedName("email")

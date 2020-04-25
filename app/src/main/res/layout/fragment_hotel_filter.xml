@@ -258,7 +258,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
 
             />
-            <com.google.android.material.slider.Slider
+            <SeekBar
                     android:id="@+id/filterPriceRange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -343,8 +343,6 @@
                     android:textColor="#000000"/>
 
         </LinearLayout>
-
-
 
 
     </RelativeLayout>

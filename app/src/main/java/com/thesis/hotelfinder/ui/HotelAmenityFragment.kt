@@ -7,18 +7,33 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 
 import com.thesis.hotelfinder.R
 import com.thesis.hotelfinder.databinding.FragmentHotelAmenityBinding
+import com.thesis.hotelfinder.viewmodel.SharedViewModel
+import kotlinx.android.synthetic.main.fragment_hotel_amenity.*
 
 
 class HotelAmenityFragment : Fragment() {
 
 
     private lateinit var binding: FragmentHotelAmenityBinding
+    private lateinit var sharedViewModel: SharedViewModel
+
+    var CheckBox.checked: Boolean
+        get() = isChecked
+        set(value) {
+            if(isChecked != value) {
+                isChecked = value
+                jumpDrawablesToCurrentState()
+            }
+
+        }
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // binding object that holds all views in the given fragment
@@ -27,6 +42,8 @@ class HotelAmenityFragment : Fragment() {
         )
         binding = dataBinding
 
+
+
         return dataBinding.root
     }
 
@@ -34,38 +51,61 @@ class HotelAmenityFragment : Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val location_id = arguments?.getInt("location_id", 0)
+        sharedViewModel =  ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
+
+        persistCheckBoxes()
 
         // Navigate back to HotelFilterFragment
-        amenityNavigateBack(binding, location_id!!)
+        amenityNavigateBack()
     }
 
-    private fun getAmenities(binding: FragmentHotelAmenityBinding): String{
-        val amenities = mutableListOf<String>()
 
-        if(binding.freeInternet.isChecked)amenities.add("free_internet")
-        if(binding.freeParking.isChecked) amenities.add( "free_parking")
-        if(binding.roomService.isChecked) amenities.add( "room_service")
-        if(binding.fitnessCenter.isChecked) amenities.add( "fitness_center")
-        if(binding.swimmingPool.isChecked) amenities.add( "swimming_pool")
-        if(binding.petsAllowed.isChecked)amenities.add( "pets_allowed")
-        if(binding.casino.isChecked)amenities.add( "casino")
-        if(binding.restaurant.isChecked) amenities.add( "restaurant")
-        if(binding.laundry.isChecked) amenities.add( "laundry")
-        if(binding.spa.isChecked) amenities.add( "spa")
-        if(binding.nonSmokingHotel.isChecked) amenities.add( "non_smoking_hotel")
+    private fun getAmenities(): String{
+
+        val amenities = mutableListOf<String>()
+        if(binding.freeInternet.checked)amenities.add("free_internet")
+        if(binding.freeParking.checked) amenities.add( "free_parking")
+        if(binding.roomService.checked) amenities.add( "room_service")
+        if(binding.fitnessCenter.checked) amenities.add( "fitness_center")
+        if(binding.swimmingPool.checked) amenities.add( "swimming_pool")
+        if(binding.petsAllowed.checked)amenities.add( "pets_allowed")
+        if(binding.casino.checked)amenities.add( "casino")
+        if(binding.restaurant.checked) amenities.add( "restaurant")
+        if(binding.laundry.checked) amenities.add( "laundry")
+        if(binding.spa.checked) amenities.add( "spa")
+        if(binding.nonSmokingHotel.checked) amenities.add( "non_smoking_hotel")
 
         return amenities.joinToString(",")
     }
 
-    private fun amenityNavigateBack(binding: FragmentHotelAmenityBinding, getLocationId: Int){
+    private fun persistCheckBoxes(){
 
+        if(sharedViewModel.amenities.value != null){
+            val amenityString = sharedViewModel.amenities.value
+            val amenities: List<String> = amenityString!!.split(",").map { it.trim() }
+            Log.i("Amenities per", amenities.toString())
+            amenities.forEach { amenity->
+                if(amenity == "free_internet") binding.freeInternet.checked = true
+                else if(amenity == "free_parking") binding.freeParking.checked = true
+                else if(amenity == "room_service") binding.roomService.checked = true
+                else if(amenity == "fitness_center") binding.fitnessCenter.checked = true
+                else if(amenity == "swimming_pool") binding.swimmingPool.checked = true
+                else if(amenity == "pets_allowed") binding.petsAllowed.checked = true
+                else if(amenity == "casino") binding.casino.checked = true
+                else if(amenity == "restaurant") binding.restaurant.checked = true
+                else if(amenity == "laundry") binding.laundry.checked = true
+                else if(amenity == "spa") binding.spa.checked = true
+                else if(amenity == "non_smoking_hotel") binding.nonSmokingHotel.checked = true
+            }
+        }
+    }
+
+    private fun amenityNavigateBack(){
         binding.AmenityDoneBtn.setOnClickListener{
-            val amenities = getAmenities(binding)
-            Log.i("Amen", amenities)
-            val bundle = bundleOf("location_id" to getLocationId)
-            bundle.putString("amenities", amenities)
-            view!!.findNavController().navigate(R.id.action_hotelAmenityFragment_to_hotelFilterFragment, bundle)
+            val amenities = getAmenities()
+            Log.i("Amenities",amenities)
+            sharedViewModel.setAmenities(amenities)
+            view!!.findNavController().navigate(R.id.action_hotelAmenityFragment_to_hotelFilterFragment)
         }
     }
 

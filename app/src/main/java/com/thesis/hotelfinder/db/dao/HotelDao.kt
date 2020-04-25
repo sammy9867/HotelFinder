@@ -13,7 +13,12 @@ interface HotelDao {
     @Transaction
     @Query(
         """SELECT * FROM hotel_table
-        WHERE location_search_id = :locationSearchId AND max_price = :maxPrice AND hotel_class = :hotelClass"""
+        WHERE location_search_id = :locationSearchId AND checkIn = :checkIn
+        AND adults = :adults AND rooms = :rooms AND nights = :nights AND
+        max_price = :maxPrice AND hotel_class = :hotelClass AND amenityInput = :amenityInput"""
     )
-    fun getAllHotelsByLocationId(locationSearchId: Int, maxPrice: Int, hotelClass: Float) : List<Hotel>
+    fun getAllHotelsByLocationId(locationSearchId: Int, checkIn: String,
+                                 adults: Int,  rooms: Int,  nights: Int,
+                                 maxPrice: Int, hotelClass: Float,
+                                 amenityInput: String) : List<Hotel>
 }

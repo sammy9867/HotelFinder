@@ -22,9 +22,6 @@
 
     <fragment android:id="@+id/hotelFilterFragment" android:name="com.thesis.hotelfinder.ui.HotelFilterFragment"
               android:label="fragment_hotel_filter" tools:layout="@layout/fragment_hotel_filter">
-        <argument
-                android:name="location_id"
-                app:argType="integer" />
         <action android:id="@+id/action_hotelFilterFragment_to_hotelAmenityFragment"
                 app:destination="@id/hotelAmenityFragment"/>
         <action android:id="@+id/action_hotelFilterFragment_to_hotelFragment" app:destination="@id/hotelFragment"/>
@@ -33,9 +30,6 @@
 
     <fragment android:id="@+id/hotelAmenityFragment" android:name="com.thesis.hotelfinder.ui.HotelAmenityFragment"
               android:label="fragment_hotel_amenity" tools:layout="@layout/fragment_hotel_amenity">
-        <argument
-                android:name="location_id"
-                app:argType="integer" />
         <action android:id="@+id/action_hotelAmenityFragment_to_hotelFilterFragment"
                 app:destination="@id/hotelFilterFragment"/>
     </fragment>

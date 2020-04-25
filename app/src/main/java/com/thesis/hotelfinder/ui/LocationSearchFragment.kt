@@ -30,11 +30,13 @@ import com.thesis.hotelfinder.model.Country
 import com.thesis.hotelfinder.model.LocationSearch
 import com.thesis.hotelfinder.util.CountryData
 import com.thesis.hotelfinder.viewmodel.MyViewModelFactory
+import com.thesis.hotelfinder.viewmodel.SharedViewModel
 
 
 class LocationSearchFragment : Fragment(), OnCountryListener {
 
     private lateinit var locationSearchViewModel: LocationSearchViewModel
+    private lateinit var sharedViewModel: SharedViewModel
     private var countryList : MutableList<Country> = mutableListOf()
 
     private lateinit var binding: FragmentLocationSearchBinding
@@ -55,6 +57,7 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
 
         locationSearchViewModel =  ViewModelProviders.of(this, MyViewModelFactory(context!!)).
             get(LocationSearchViewModel::class.java)
+        sharedViewModel =  ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
 
         // Search destination
         binding.locationSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -85,8 +88,8 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
             observe(viewLifecycleOwner, Observer<Resource<LocationSearch>>{ locationSearchResponse ->
 
                 if(locationSearchResponse?.data != null){
-                    val bundle = bundleOf("location_id" to locationSearchResponse.data.location_id)
-                    view!!.findNavController().navigate(R.id.action_locationSearchFragment_to_hotelFragment, bundle)
+                    sharedViewModel.setLocationSearchId(locationSearchResponse.data.location_id)
+                    view!!.findNavController().navigate(R.id.action_locationSearchFragment_to_hotelFragment)
                 }else{
                     Log.i("isError", "LocationSearchResponse")
                 }

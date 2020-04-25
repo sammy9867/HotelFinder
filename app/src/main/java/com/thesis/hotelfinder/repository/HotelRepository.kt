@@ -38,7 +38,7 @@ class HotelRepository(context: Context,
 
     fun getHotelsListFromLocationId(location_id: Int, check_in_date: String,
     number_of_adults: Int, number_of_rooms :Int, number_of_nights: Int, max_price: Int, hotel_class: Float,
-                                    amenities: String): LiveData<Resource<List<Hotel>>> {
+                                    amenityInput: String): LiveData<Resource<List<Hotel>>> {
 
         //<ResultType, RequestType>
         return object : NetworkBoundResource<List<Hotel>, HotelResponse>(AppExecutors.getInstance()) {
@@ -50,7 +50,9 @@ class HotelRepository(context: Context,
                     val hotelList: ArrayList<Hotel> = arrayListOf()
                        // Log.i("REPO INS", "isSucc")// GsonBuilder().setPrettyPrinting().create().toJson(item.data))//GsonBuilder().setPrettyPrinting().create().toJson(item.data))
                     for(i in item.data){
-                        val hotel = Hotel(i.location_id, location_id, max_price, hotel_class,
+                        val hotel = Hotel(i.location_id, location_id, check_in_date,
+                            number_of_adults, number_of_rooms, number_of_nights,
+                            max_price, hotel_class, amenityInput,
                             i.name, i.latitude, i.longitude, i.num_reviews, i.ranking, i.rating,
                             i.price_level, i.price, i.photo
                         )
@@ -69,7 +71,9 @@ class HotelRepository(context: Context,
                 val hotelListLiveData : MutableLiveData<List<Hotel>> = MutableLiveData()
                 var hotelList: List<Hotel>?
                 CoroutineScope(Dispatchers.IO).launch{
-                    hotelList = hotelDao.getAllHotelsByLocationId(location_id, max_price, hotel_class) //, min_price, max_price, hotel_class)
+                    hotelList = hotelDao.getAllHotelsByLocationId(location_id, check_in_date,
+                        number_of_adults, number_of_rooms, number_of_nights,
+                        max_price, hotel_class, amenityInput)
                     if(!hotelList.isNullOrEmpty()){
                         Log.i("REPO SIZE", "" + hotelList!!.size)
                        // Log.i("REPO", "" + hotelList!![0].location_id + " " + hotelList!![0].name)
@@ -86,7 +90,7 @@ class HotelRepository(context: Context,
             override fun createCall(): LiveData<ApiResponse<HotelResponse>> {
                 Log.i("REPO", "CALLING API")
                 return tripAdvisorApiService.getHotelsListFromLocationId(location_id, check_in_date, number_of_adults, number_of_rooms,
-                    number_of_nights, max_price, hotel_class, amenities)
+                    number_of_nights, max_price, hotel_class, amenityInput)
             }
         }.asLiveData()
     }
