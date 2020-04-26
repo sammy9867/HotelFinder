@@ -32,7 +32,6 @@ import com.thesis.hotelfinder.viewmodel.MyViewModelFactory
 class HotelDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentHotelDetailsBinding
-
     private lateinit var hotelDetailsViewModel: HotelDetailsViewModel
     private val amenityFilterList = AmenityFilterData().getAmenityFilterList()
 
@@ -50,14 +49,21 @@ class HotelDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val hotelLocationId = arguments?.getInt("hotel_location_id")
-        Log.i("HotelBundle", hotelLocationId.toString())
-
-        filterNavigateBack(binding)
-
         hotelDetailsViewModel =  ViewModelProviders.of(this, MyViewModelFactory(context!!)).
             get(HotelDetailsViewModel::class.java)
-        hotelDetailsViewModel.getHotelsListFromLocationId(hotelLocationId!!).
+
+        val hotelLocationId = arguments?.getInt("hotel_location_id")
+        if(hotelLocationId != null){
+            showHotelDetails(hotelLocationId)
+        }
+
+        // Navigate back to HotelFilters
+        filterNavigateBack(binding)
+    }
+
+    private fun showHotelDetails(hotelLocationId: Int){
+
+        hotelDetailsViewModel.getHotelsListFromLocationId(hotelLocationId).
             observe(this, Observer<Resource<HotelDetails>>{ hotelDetailsResponse ->
 
                 if(hotelDetailsResponse?.data != null){
@@ -86,7 +92,6 @@ class HotelDetailsFragment : Fragment() {
                         for(amenityName in response.amenities){
                             if(amenityFilter.id == amenityName.key){
                                 amenityList.add(amenityFilter)
-                                Log.i("Amenity", amenityFilter.name + " " + amenityFilter.icon.toString())
                             }
                         }
                     }
@@ -97,7 +102,6 @@ class HotelDetailsFragment : Fragment() {
                 }
 
             })
-
     }
 
     private fun filterNavigateBack(binding: FragmentHotelDetailsBinding){

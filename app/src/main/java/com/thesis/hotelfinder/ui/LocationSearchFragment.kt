@@ -35,11 +35,10 @@ import com.thesis.hotelfinder.viewmodel.SharedViewModel
 
 class LocationSearchFragment : Fragment(), OnCountryListener {
 
+    private lateinit var binding: FragmentLocationSearchBinding
     private lateinit var locationSearchViewModel: LocationSearchViewModel
     private lateinit var sharedViewModel: SharedViewModel
     private var countryList : MutableList<Country> = mutableListOf()
-
-    private lateinit var binding: FragmentLocationSearchBinding
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -89,6 +88,7 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
 
                 if(locationSearchResponse?.data != null){
                     sharedViewModel.setLocationSearchId(locationSearchResponse.data.location_id)
+                    sharedViewModel.rvScrollPostion.value = null
                     view!!.findNavController().navigate(R.id.action_locationSearchFragment_to_hotelFragment)
                 }else{
                     Log.i("isError", "LocationSearchResponse")

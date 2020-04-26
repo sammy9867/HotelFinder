@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -22,7 +21,6 @@ import com.thesis.hotelfinder.adapter.OnHotelListener
 import com.thesis.hotelfinder.api.network.Resource
 import com.thesis.hotelfinder.databinding.FragmentHotelsBinding
 import com.thesis.hotelfinder.model.Hotel
-import com.thesis.hotelfinder.model.HotelFilter
 import com.thesis.hotelfinder.viewmodel.HotelsViewModel
 import com.thesis.hotelfinder.viewmodel.MyViewModelFactory
 import com.thesis.hotelfinder.viewmodel.SharedViewModel
@@ -51,50 +49,27 @@ class HotelFragment : Fragment(), OnHotelListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.lifecycleOwner = viewLifecycleOwner
 
-
-        val hotelFilter = HotelFilter(30, 3.0f)
-
-
-
         hotelsViewModel =  ViewModelProviders.of(this, MyViewModelFactory(context!!)).
             get(HotelsViewModel::class.java)
         sharedViewModel =  ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
 
-        var locationId = 0
+
         if(sharedViewModel.locationId.value != null){
-            Log.i("SharedViewModel", "is not null")
-            locationId = sharedViewModel.locationId.value!!
-            Log.i("SharedViewModel", locationId.toString())
-        }else{
-            Log.i("SharedViewModel", "is null")
+            val locationId = sharedViewModel.locationId.value!!
+
+            // List hotels
+            listHotels(binding, locationId)
         }
 
+        // Navigate back to LocationSearchFragment
+        navigateBack()
 
-
-        // List hotels
-        listHotels(binding, locationId, hotelFilter)
-
-        // back button
-        navigateBack(binding)
-
-        // filter button
-        filterButton(binding, locationId)
+        // Navigate to HotelFilterFragment
+        navigateToFilters()
 
     }
 
-    private fun navigateBack(binding: FragmentHotelsBinding){
-        binding.hotelBackIb.setOnClickListener{
-            view!!.findNavController().navigate(R.id.action_hotelFragment_to_locationSearchFragment)
-        }
-    }
-
-    private fun filterButton(binding: FragmentHotelsBinding, getLocationId: Int){
-        binding.hotelFilterIb.setOnClickListener{
-            view!!.findNavController().navigate(R.id.action_hotelFragment_to_hotelFilterFragment)
-        }
-    }
-
-    private fun listHotels(binding: FragmentHotelsBinding, getLocationId: Int, hotelFilter: HotelFilter){
+    private fun listHotels(binding: FragmentHotelsBinding, getLocationId: Int){
 
         defaultFilter()
         val checkIn = sharedViewModel.checkIn.value
@@ -115,9 +90,13 @@ class HotelFragment : Fragment(), OnHotelListener {
                 if(hotelResponse?.data != null){
                     binding.progressBarHotels.hide()
 
+                    hotelList.clear()
                     val adapter = HotelRecyclerAdapter(context!!, hotelList, this)
                     binding.rvHotel.adapter = adapter
                     binding.rvHotel.layoutManager = LinearLayoutManager(context)
+                    if(sharedViewModel.rvScrollPostion.value != null){
+                        binding.rvHotel.scrollToPosition(sharedViewModel.rvScrollPostion.value!!)
+                    }
 
                     for(i in hotelResponse.data){
                         if(i.photo != null){
@@ -132,6 +111,7 @@ class HotelFragment : Fragment(), OnHotelListener {
 
 
                     binding.rvHotel.adapter!!.notifyDataSetChanged()
+
                 }else{
                     binding.progressBarHotels.show()
                     Log.i("Fragment error", GsonBuilder().setPrettyPrinting().create().toJson(hotelResponse.errorMessage))
@@ -182,6 +162,25 @@ class HotelFragment : Fragment(), OnHotelListener {
     override fun onHotelClick(position: Int) {
         val hotel = hotelList[position]
         val bundle = bundleOf("hotel_location_id" to  hotel.location_id)
+        val layoutManager = binding.rvHotel.layoutManager
+        sharedViewModel.setRvScrollPosition((layoutManager as LinearLayoutManager).findFirstVisibleItemPosition())
         view!!.findNavController().navigate(R.id.action_hotelFragment_to_hotelDetailsFragment, bundle)
     }
+
+    private fun navigateBack(){
+        binding.hotelBackIb.setOnClickListener{
+            view!!.findNavController().navigate(R.id.action_hotelFragment_to_locationSearchFragment)
+        }
+    }
+
+    private fun navigateToFilters(){
+        binding.hotelFilterIb.setOnClickListener{
+            val layoutManager = binding.rvHotel.layoutManager
+            sharedViewModel.setRvScrollPosition((layoutManager as LinearLayoutManager).findFirstVisibleItemPosition())
+            view!!.findNavController().navigate(R.id.action_hotelFragment_to_hotelFilterFragment)
+        }
+    }
+
+
+
 }

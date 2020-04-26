@@ -15,6 +15,8 @@ class SharedViewModel : ViewModel() {
     var hotelClass = MutableLiveData<Float>()
     var amenities = MutableLiveData<String>()
 
+    var rvScrollPostion = MutableLiveData<Int>()
+
     fun setLocationSearchId(locationId: Int){
         this.locationId.value = locationId
     }
@@ -47,4 +49,7 @@ class SharedViewModel : ViewModel() {
         this.amenities.value = amenities
     }
 
+    fun setRvScrollPosition(rvScrollPostion: Int){
+        this.rvScrollPostion.value = rvScrollPostion
+    }
 }

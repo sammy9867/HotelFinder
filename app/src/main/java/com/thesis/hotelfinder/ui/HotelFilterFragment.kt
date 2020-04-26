@@ -9,8 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import androidx.appcompat.widget.AppCompatSeekBar
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -18,7 +16,6 @@ import androidx.lifecycle.Observer
 
 import com.thesis.hotelfinder.R
 import com.thesis.hotelfinder.databinding.FragmentHotelFilterBinding
-import com.thesis.hotelfinder.model.HotelFilter
 import com.thesis.hotelfinder.viewmodel.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_hotel_filter.*
 import java.text.SimpleDateFormat
@@ -29,7 +26,6 @@ class HotelFilterFragment : Fragment() {
 
     private lateinit var binding: FragmentHotelFilterBinding
     private lateinit var sharedViewModel: SharedViewModel
-    lateinit var hotelFilter: HotelFilter
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // binding object that holds all views in the given fragment
@@ -42,68 +38,70 @@ class HotelFilterFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         binding.lifecycleOwner = viewLifecycleOwner
+
         sharedViewModel =  ViewModelProviders.of(activity!!).get(SharedViewModel::class.java)
 
         // Apply Default Filter
         defaultFilter()
 
+        // Observe the changing variable filters
+        setObservers()
+
+        // Set Individual Filters
         setDateFromDialog()
         setAdults()
         setRooms()
         setNights()
         setRange()
 
-        // Apply Filters
+        // Apply Filters and navigate back to HotelFragment
         applyFilters()
 
-        // Reset Filters
+        // Reset Filters to default
         resetFilters()
-
-        setObservers()
 
         // Navigate back to HotelFragment
         filterNavigateBack()
 
         // Navigate to HotelAmenityFragment
         filterNavigateToAmenities()
-
     }
 
-    private fun applyFilters(){
-        binding.filterApplyBtn.setOnClickListener{
-            view!!.findNavController().navigate(R.id.action_hotelFilterFragment_to_hotelFragment)
-        }
-    }
 
-    private fun resetFilters(){
-        binding.filterResetBtn.setOnClickListener{
-            sharedViewModel.checkIn.value = null
-            sharedViewModel.adults.value = null
-            sharedViewModel.rooms.value = null
-            sharedViewModel.nights.value = null
-            sharedViewModel.maxPrice.value = null
-            sharedViewModel.hotelClass.value = null
-            sharedViewModel.amenities.value = null
+    private fun defaultFilter(){
 
-            Log.i("onClick", "Reset")
-            defaultFilter()
+        if(sharedViewModel.checkIn.value == null){
+            Log.i("HotelFilter", "is Null")
+            val formatterCurrDateTv  =  SimpleDateFormat("yyyy-MM-dd")
+            sharedViewModel.setCheckIn(formatterCurrDateTv.format(Date()).toString())
         }
-    }
 
-    private fun filterNavigateBack(){
-        binding.hotelFilterBackIb.setOnClickListener{
-            // default filter if for the first time
-            // But get the previously applied value if applied is not pressed
-            view!!.findNavController().navigate(R.id.action_hotelFilterFragment_to_hotelFragment)
+        if(sharedViewModel.adults.value == null){
+            Log.i("HotelFilter", "is Null")
+            sharedViewModel.setAdults(1)
         }
-    }
 
-    private fun filterNavigateToAmenities(){
-        binding.filterAmenitiesBtn.setOnClickListener{
-            view!!.findNavController().navigate(R.id.action_hotelFilterFragment_to_hotelAmenityFragment)
+        if(sharedViewModel.rooms.value == null){
+            Log.i("HotelFilter", "is Null")
+            sharedViewModel.setRooms(1)
         }
+
+        if(sharedViewModel.nights.value == null){
+            Log.i("HotelFilter", "is Null")
+            sharedViewModel.setNights(1)
+        }
+
+        if(sharedViewModel.maxPrice.value == null){
+            Log.i("HotelFilter", "is Null")
+            sharedViewModel.setMaxPrice(30)
+        }
+
+        if(sharedViewModel.hotelClass.value == null){
+            Log.i("HotelFilter", "is Null")
+            sharedViewModel.setHotelClass(3.0f)
+        }
+
     }
 
     private fun setObservers(){
@@ -162,40 +160,25 @@ class HotelFilterFragment : Fragment() {
         })
     }
 
-    private fun defaultFilter(){
-        hotelFilter  = HotelFilter(30, 3.0f)
-
-        if(sharedViewModel.checkIn.value == null){
-            Log.i("HotelFilter", "is Null")
-            val formatterCurrDateTv  =  SimpleDateFormat("yyyy-MM-dd")
-            sharedViewModel.setCheckIn(formatterCurrDateTv.format(Date()).toString())
+    private fun applyFilters(){
+        binding.filterApplyBtn.setOnClickListener{
+            sharedViewModel.rvScrollPostion.value = null
+            view!!.findNavController().navigate(R.id.action_hotelFilterFragment_to_hotelFragment)
         }
+    }
 
-        if(sharedViewModel.adults.value == null){
-            Log.i("HotelFilter", "is Null")
-            sharedViewModel.setAdults(1)
+    private fun resetFilters(){
+        binding.filterResetBtn.setOnClickListener{
+            sharedViewModel.checkIn.value = null
+            sharedViewModel.adults.value = null
+            sharedViewModel.rooms.value = null
+            sharedViewModel.nights.value = null
+            sharedViewModel.maxPrice.value = null
+            sharedViewModel.hotelClass.value = null
+            sharedViewModel.amenities.value = null
+
+            defaultFilter()
         }
-
-        if(sharedViewModel.rooms.value == null){
-            Log.i("HotelFilter", "is Null")
-            sharedViewModel.setRooms(1)
-        }
-
-        if(sharedViewModel.nights.value == null){
-            Log.i("HotelFilter", "is Null")
-            sharedViewModel.setNights(1)
-        }
-
-        if(sharedViewModel.maxPrice.value == null){
-            Log.i("HotelFilter", "is Null")
-            sharedViewModel.setMaxPrice(30)
-        }
-
-        if(sharedViewModel.hotelClass.value == null){
-            Log.i("HotelFilter", "is Null")
-            sharedViewModel.setHotelClass(3.0f)
-        }
-
     }
 
     private fun setDateFromDialog(){
@@ -322,7 +305,17 @@ class HotelFilterFragment : Fragment() {
 
     }
 
+    private fun filterNavigateBack(){
+        binding.hotelFilterBackIb.setOnClickListener{
+            // default filter if for the first time
+            // But get the previously applied value if applied is not pressed
+            view!!.findNavController().navigate(R.id.action_hotelFilterFragment_to_hotelFragment)
+        }
+    }
 
-
-
+    private fun filterNavigateToAmenities(){
+        binding.filterAmenitiesBtn.setOnClickListener{
+            view!!.findNavController().navigate(R.id.action_hotelFilterFragment_to_hotelAmenityFragment)
+        }
+    }
 }
