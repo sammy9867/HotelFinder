@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="filter_dimens">15dp</dimen>
+    <dimen name="amenity_dimens">35dp</dimen>
+    <dimen name="amenity_ib_tv_dimens">8dp</dimen>
+</resources>

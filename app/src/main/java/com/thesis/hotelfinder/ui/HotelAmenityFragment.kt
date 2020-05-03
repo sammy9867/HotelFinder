@@ -11,6 +11,7 @@ import android.widget.CheckBox
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import com.google.android.material.checkbox.MaterialCheckBox
 
 import com.thesis.hotelfinder.R
 import com.thesis.hotelfinder.databinding.FragmentHotelAmenityBinding
@@ -22,7 +23,7 @@ class HotelAmenityFragment : Fragment() {
     private lateinit var binding: FragmentHotelAmenityBinding
     private lateinit var sharedViewModel: SharedViewModel
 
-    private var CheckBox.checked: Boolean
+    private var MaterialCheckBox.checked: Boolean
         get() = isChecked
         set(value) {
             if(isChecked != value) {

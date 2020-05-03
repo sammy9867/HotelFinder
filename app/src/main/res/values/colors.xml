@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#E0E0E0</color>
-    <color name="colorPrimaryDark">#FBB8AC</color>
-    <color name="colorAccent">#FEDBD0</color>
-    <color name="textColorPrimary">#442C2E</color>
-    <color name="hotelGridBackgroundColor">#FFFFFF</color>
+    <color name="purple">#7C60DB</color>
+    <color name="teal_200">#03DAC6</color>
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="light_gray">#d3d3d3</color>
     <color name="dark_gray">#a9a9a9</color>
+    <color name="red">#b00020</color>
 </resources>

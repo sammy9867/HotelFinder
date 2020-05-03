@@ -1,3 +1,3 @@
 package com.thesis.hotelfinder.model
 
-data class AmenityFilter(var id: String, var name: String, var icon: Int, var isSelected: Boolean)
+data class AmenityFilter(var id: String, var name: String, var icon: Int)

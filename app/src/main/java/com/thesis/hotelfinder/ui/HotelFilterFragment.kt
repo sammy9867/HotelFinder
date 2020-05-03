@@ -146,6 +146,7 @@ class HotelFilterFragment : Fragment() {
                 if(o != null){
                     val maxPrice = o as Int
                     binding.filterPriceRange.progress = maxPrice
+                    binding.budgetRatingProgressTv.text = "$" + maxPrice
                 }
             }
         })
@@ -158,6 +159,7 @@ class HotelFilterFragment : Fragment() {
                 }
             }
         })
+
     }
 
     private fun applyFilters(){
@@ -284,11 +286,14 @@ class HotelFilterFragment : Fragment() {
 
     private fun setRange(){
 
+        binding.filterPriceRange.progress = 0
+        binding.filterPriceRange.incrementProgressBy(1)
+        binding.filterPriceRange.max = 200
         binding.filterPriceRange.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
 
-            override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 // Display the current progress of SeekBar
-                sharedViewModel.setMaxPrice(i)
+                sharedViewModel.setMaxPrice(progress)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar ) {
