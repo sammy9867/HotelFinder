@@ -10,8 +10,7 @@
         android:focusable="true"
         card_view:cardUseCompatPadding="true"
         card_view:cardElevation="3dp"
-        card_view:cardCornerRadius="15dp"
-        >
+        card_view:cardCornerRadius="15dp">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -24,18 +23,15 @@
                 android:layout_marginTop="-10dp"
                 android:layout_marginStart="-10dp"
                 android:layout_marginEnd="25dp"
-                card_view:cardCornerRadius="10dp"
-        >
+                card_view:cardCornerRadius="10dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/hotelImageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-            />
+                    android:scaleType="centerCrop"/>
 
         </com.google.android.material.card.MaterialCardView>
-
 
         <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/hotelName"
@@ -44,9 +40,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginTop="10dp"
-                android:textAppearance="@style/TextAppearance.MyTheme.Subtitle1"
-              />
-
+                android:textAppearance="@style/TextAppearance.MyTheme.Subtitle1"/>
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -95,7 +89,6 @@
                 android:layout_marginEnd="25dp"
                 android:layout_marginTop="15dp"
                 android:background="@android:color/darker_gray"/>
-
 
         <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/hotelPrice"

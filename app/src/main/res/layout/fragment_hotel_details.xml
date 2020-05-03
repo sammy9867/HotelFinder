@@ -5,148 +5,200 @@
         tools:context=".ui.HotelDetailsFragment">
 
 
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/hotelDetailsTopBar"
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="center">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/hotelDetailsToolbar"
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/hotelDetailsTopBar"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize">
+                    android:layout_height="100dp"
+                    android:gravity="center">
 
-                <LinearLayout
+                <com.google.android.material.appbar.MaterialToolbar
+                        android:id="@+id/hotelDetailsToolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:layout_height="?attr/actionBarSize">
 
-                    <androidx.appcompat.widget.AppCompatImageButton
-                            android:id="@+id/hotelDetailsBackIb"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="10dp"
-                            android:src="@drawable/ic_back"
-                            android:background="@color/purple"
-                    />
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
 
-
-                    <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="@string/tab_title_hotel_details"
-                            android:textAppearance="@style/TextAppearance.MyTheme.Headline5"
-                          />
-
-                </LinearLayout>
+                        <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/hotelDetailsBackIb"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="10dp"
+                                android:src="@drawable/ic_back"
+                                android:background="@color/purple"
+                        />
 
 
-            </com.google.android.material.appbar.MaterialToolbar>
+                        <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/tab_title_hotel_details"
+                                android:textAppearance="@style/TextAppearance.MyTheme.Headline5"
+                        />
 
-        </com.google.android.material.appbar.AppBarLayout>
+                    </LinearLayout>
 
-        <LinearLayout
+
+                </com.google.android.material.appbar.MaterialToolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                    android:id="@+id/progressBarHotelDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    style="?android:attr/progressBarStyleLarge"
+            />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/hotelDetailsIv"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scaleType="centerCrop"
+                    android:layout_below="@+id/hotelDetailsTopBar"/>
+
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_below="@+id/hotelDetailsTopBar">
-
-
-                <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/hotelDetailsIv"
-                        android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:scaleType="centerCrop"
-                       />
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@+id/hotelDetailsIv">
 
                 <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/hotelDetailsName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
                         android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:textColor="#000000"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                />
-
-                <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/hotelDetailsAddress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginTop="10dp"
-                        android:textColor="#000000"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-                <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/hotelDetailsPhone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginTop="10dp"
-                        android:textColor="#000000"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-
-                <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/hotelDetailsRanking"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginTop="10dp"
-                        android:textColor="#000000"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textAppearance="@style/TextAppearance.MyTheme2.Headline5"
                 />
 
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="15dp">
 
-                    <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/hotelDetailsRating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginTop="5dp"
-                            android:textColor="#000000"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
+                    <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/addressIcon"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/ic_address"
+
                     />
 
                     <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/hotelDetailsNumReviews"
+                            android:id="@+id/hotelDetailsAddress"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="15dp"
-                            android:textColor="#000000"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_marginStart="10dp"
+                            android:textAppearance="@style/TextAppearance.MyTheme.Subtitle2"
+
                     />
+
                 </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/phoneIcon"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/ic_phone"
+
+                    />
+
+                    <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/hotelDetailsPhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textAppearance="@style/TextAppearance.MyTheme.Subtitle2"
+                    />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/rankingIcon"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/ic_ranking"
+                    />
+
+                    <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/hotelDetailsRanking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:textAppearance="@style/TextAppearance.MyTheme.Subtitle2"
+                    />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="25dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/hotelDetailsPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.MyTheme.Headline6"
+                    />
+
+                    <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/perNighttv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:textColor="@color/dark_gray"
+                            android:textAppearance="@style/TextAppearance.MyTheme.Subtitle2"
+                    />
+
+                </LinearLayout>
+
+
+                <View
+                        android:id="@+id/hotelDetailsSeparator"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/darker_gray"/>
 
                 <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/hotelDetailsDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:textColor="#000000"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textAppearance="@style/TextAppearance.MyTheme.Body2"
                 />
 
 
@@ -154,14 +206,16 @@
                         android:id="@+id/rv_amenity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal"
 
                 />
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
 
 </layout>

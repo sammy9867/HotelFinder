@@ -12,16 +12,12 @@
         <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/locationSearchTopBar"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-              >
-
-
+                android:layout_height="100dp">
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:gravity="center"
-                    >
+                    android:gravity="center">
 
                 <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
@@ -36,9 +32,7 @@
                         android:layout_height="40dp"
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="15dp"
-                        android:background="@drawable/rounded_search_bar"
-
-                >
+                        android:background="@drawable/rounded_search_bar">
 
                     <androidx.appcompat.widget.SearchView
                             android:id="@+id/locationSearchView"
@@ -57,10 +51,6 @@
                 </com.google.android.material.appbar.MaterialToolbar>
 
             </LinearLayout>
-
-
-
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <RelativeLayout
@@ -83,8 +73,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            />
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
         </RelativeLayout>
 
     </RelativeLayout>

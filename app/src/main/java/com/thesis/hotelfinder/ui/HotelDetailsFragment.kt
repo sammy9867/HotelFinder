@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -67,6 +68,12 @@ class HotelDetailsFragment : Fragment() {
             observe(this, Observer<Resource<HotelDetails>>{ hotelDetailsResponse ->
 
                 if(hotelDetailsResponse?.data != null){
+                    binding.progressBarHotelDetails.hide()
+                    binding.addressIcon.visibility = View.VISIBLE
+                    binding.phoneIcon.visibility = View.VISIBLE
+                    binding.rankingIcon.visibility = View.VISIBLE
+                    binding.hotelDetailsSeparator.visibility = View.VISIBLE
+
                     Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
                     val response = hotelDetailsResponse.data
                     Glide.with(this)
@@ -79,8 +86,10 @@ class HotelDetailsFragment : Fragment() {
                     binding.hotelDetailsAddress.text = response.address
                     binding.hotelDetailsPhone.text = response.phone
                     binding.hotelDetailsRanking.text = response.ranking
-                    binding.hotelDetailsRating.text = response.rating.toString()
-                    binding.hotelDetailsNumReviews.text = "("  +response.num_reviews.toString() + " reviews)"
+                    if(response.price != null){
+                        binding.hotelDetailsPrice.text = response.price
+                        binding.perNighttv.text = "per night"
+                    }
                     binding.hotelDetailsDescription.text = response.description
 
                     val amenityList = mutableListOf<AmenityFilter>()
@@ -98,7 +107,11 @@ class HotelDetailsFragment : Fragment() {
 
                     binding.rvAmenity.adapter!!.notifyDataSetChanged()
                 }else{
-                    Log.i("error", "HotelDetails")
+                    binding.progressBarHotelDetails.show()
+                    binding.addressIcon.visibility = View.GONE
+                    binding.phoneIcon.visibility = View.GONE
+                    binding.rankingIcon.visibility = View.GONE
+                    binding.hotelDetailsSeparator.visibility = View.GONE
                 }
 
             })

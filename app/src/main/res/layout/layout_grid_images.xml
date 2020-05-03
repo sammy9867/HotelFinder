@@ -21,19 +21,17 @@
                     android:id="@+id/countryImageView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    />
+                    android:adjustViewBounds="true"/>
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/countryTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textColor="#FFFF"
                     android:layout_marginStart="10dp"
-                    android:layout_alignParentBottom="true"
                     android:paddingBottom="10dp"
-                    />
+                    android:layout_alignParentBottom="true"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
 
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
