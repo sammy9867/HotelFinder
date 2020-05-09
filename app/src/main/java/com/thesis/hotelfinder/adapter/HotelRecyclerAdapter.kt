@@ -1,9 +1,11 @@
 package com.thesis.hotelfinder.adapter
 
+import android.animation.AnimatorInflater
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -19,25 +21,35 @@ class HotelRecyclerAdapter(private val context: Context, private val hotelList: 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HotelListViewHolder {
         val view : View = LayoutInflater.from(context).inflate(R.layout.layout_hotel_items, parent, false)
-        return HotelListViewHolder(view, onHotelListener)
+        val vh = HotelListViewHolder(view, onHotelListener)
+        return vh
     }
 
     override fun onBindViewHolder(holder: HotelListViewHolder, position: Int) {
         val hotel = hotelList[position]
-        holder.hotelNameTv.text = hotel.name
+        holder.hotelNameTv.apply {
+            transitionName = hotel.name
+            text = hotel.name
+        }
         holder.hotelNumReviewsTv.text = "(" + hotel.num_reviews.toString() + " reviews)"
         holder.hotelRatingsTv.text = hotel.rating.toString()
         holder.hotelPriceTv.text = hotel.price.toString()
-        Glide.with(this.context)
-            .load(hotel.photo!!.images.original.url)
-            .apply( RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.ALL))
-            .into(holder.hotelIv)
+        holder.hotelIv.apply {
+            transitionName = hotel.photo!!.images.original.url
+            Glide.with(this)
+                .load(hotel.photo!!.images.original.url)
+                .apply( RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL))
+                .into(this)
+        }
+
     }
 
     override fun getItemCount(): Int {
         return hotelList.size
     }
+
+
 
     inner class HotelListViewHolder(itemView: View, private val onHotelListener: OnHotelListener):
         RecyclerView.ViewHolder(itemView), View.OnClickListener{
@@ -54,7 +66,7 @@ class HotelRecyclerAdapter(private val context: Context, private val hotelList: 
         }
 
         override fun onClick(v : View?) {
-            onHotelListener.onHotelClick(adapterPosition)
+            onHotelListener.onHotelClick(adapterPosition, hotelIv, hotelNameTv)
         }
     }
 }

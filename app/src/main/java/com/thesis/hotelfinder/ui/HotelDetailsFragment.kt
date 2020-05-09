@@ -2,6 +2,7 @@ package com.thesis.hotelfinder.ui
 
 
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -36,6 +38,15 @@ class HotelDetailsFragment : Fragment() {
     private lateinit var hotelDetailsViewModel: HotelDetailsViewModel
     private val amenityFilterList = AmenityFilterData().getAmenityFilterList()
 
+
+    private val args: HotelDetailsFragmentArgs by navArgs()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+
+    }
+
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // binding object that holds all views in the given fragment
@@ -53,12 +64,31 @@ class HotelDetailsFragment : Fragment() {
         hotelDetailsViewModel =  ViewModelProviders.of(this, MyViewModelFactory(context!!)).
             get(HotelDetailsViewModel::class.java)
 
-        val hotelLocationId = arguments?.getInt("hotel_location_id")
-        if(hotelLocationId != null){
-            showHotelDetails(hotelLocationId)
+
+        val hotelLocationId = args.hotelLocationId
+        val hotelIv = args.hotelImage
+        val hotelTv = args.hotelName
+
+        if(hotelIv != null && hotelTv != null){
+            binding.hotelDetailsIv.apply {
+                transitionName = hotelIv
+                Glide.with(this)
+                    .load(hotelIv)
+                    .apply( RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(this)
+            }
+
+            binding.hotelDetailsName.apply {
+                transitionName = hotelTv
+                text = hotelTv
+            }
         }
 
-        // Navigate back to HotelFilters
+        showHotelDetails(hotelLocationId)
+
+
+                    // Navigate back to HotelFilters
         filterNavigateBack(binding)
     }
 
@@ -67,22 +97,17 @@ class HotelDetailsFragment : Fragment() {
         hotelDetailsViewModel.getHotelsListFromLocationId(hotelLocationId).
             observe(this, Observer<Resource<HotelDetails>>{ hotelDetailsResponse ->
 
+
                 if(hotelDetailsResponse?.data != null){
                     binding.progressBarHotelDetails.hide()
                     binding.addressIcon.visibility = View.VISIBLE
-                    binding.phoneIcon.visibility = View.VISIBLE
+                                        binding.phoneIcon.visibility = View.VISIBLE
                     binding.rankingIcon.visibility = View.VISIBLE
                     binding.hotelDetailsSeparator.visibility = View.VISIBLE
 
                     Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
                     val response = hotelDetailsResponse.data
-                    Glide.with(this)
-                        .load(response.photo!!.images.original.url)
-                        .apply( RequestOptions()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL))
-                        .into(binding.hotelDetailsIv)
 
-                    binding.hotelDetailsName.text = response.name
                     binding.hotelDetailsAddress.text = response.address
                     binding.hotelDetailsPhone.text = response.phone
                     binding.hotelDetailsRanking.text = response.ranking

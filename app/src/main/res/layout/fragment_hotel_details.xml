@@ -60,7 +60,9 @@
                     android:id="@+id/progressBarHotelDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="30dp"
                     android:visibility="gone"
                     style="?android:attr/progressBarStyleLarge"
             />

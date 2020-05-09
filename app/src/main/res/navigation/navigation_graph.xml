@@ -7,7 +7,9 @@
 
     <fragment android:id="@+id/locationSearchFragment" android:name="com.thesis.hotelfinder.ui.LocationSearchFragment"
               android:label="fragment_location_search" tools:layout="@layout/fragment_location_search">
-        <action android:id="@+id/action_locationSearchFragment_to_hotelFragment" app:destination="@id/hotelFragment"/>
+        <action android:id="@+id/action_locationSearchFragment_to_hotelFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:destination="@id/hotelFragment"/>
     </fragment>
 
 
@@ -16,6 +18,18 @@
         <argument
                 android:name="hotel_location_id"
                 app:argType="integer" />
+        <argument
+                android:name="hotel_image"
+                app:argType="string"
+                app:nullable="true"
+                android:defaultValue="null" />
+
+        <argument
+                android:name="hotel_name"
+                app:argType="string"
+                app:nullable="true"
+                android:defaultValue="null" />
+
         <action android:id="@+id/action_hotelDetailsFragment_to_hotelFragment" app:destination="@id/hotelFragment"/>
     </fragment>
 
@@ -23,6 +37,7 @@
     <fragment android:id="@+id/hotelFilterFragment" android:name="com.thesis.hotelfinder.ui.HotelFilterFragment"
               android:label="fragment_hotel_filter" tools:layout="@layout/fragment_hotel_filter">
         <action android:id="@+id/action_hotelFilterFragment_to_hotelAmenityFragment"
+                app:enterAnim="@anim/slide_in_top"
                 app:destination="@id/hotelAmenityFragment"/>
         <action android:id="@+id/action_hotelFilterFragment_to_hotelFragment" app:destination="@id/hotelFragment"/>
     </fragment>
@@ -31,7 +46,8 @@
     <fragment android:id="@+id/hotelAmenityFragment" android:name="com.thesis.hotelfinder.ui.HotelAmenityFragment"
               android:label="fragment_hotel_amenity" tools:layout="@layout/fragment_hotel_amenity">
         <action android:id="@+id/action_hotelAmenityFragment_to_hotelFilterFragment"
-                app:destination="@id/hotelFilterFragment"/>
+                app:destination="@id/hotelFilterFragment"
+        />
     </fragment>
 
 

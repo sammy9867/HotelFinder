@@ -23,7 +23,7 @@ sealed class ApiResponse<T> {
                 } else {
                     ApiSuccessResponse(
                         body = body,
-                        linkHeader = response.headers()?.get("link")
+                        linkHeader = response.headers().get("link")
                     )
                 }
             } else {
@@ -46,41 +46,25 @@ class ApiEmptyResponse<T> : ApiResponse<T>()
 
 data class ApiSuccessResponse<T>(
     val body: T,
-    val links: Map<String, String>
+    val links: Map<String?, String>
 ) : ApiResponse<T>() {
     constructor(body: T, linkHeader: String?) : this(
         body = body,
         links = linkHeader?.extractLinks() ?: emptyMap()
     )
 
-    val nextPage: Int? by lazy(LazyThreadSafetyMode.NONE) {
-        links[NEXT_LINK]?.let { next ->
-            val matcher = PAGE_PATTERN.matcher(next)
-            if (!matcher.find() || matcher.groupCount() != 1) {
-                null
-            } else {
-                try {
-                    Integer.parseInt(matcher.group(1))
-                } catch (ex: NumberFormatException) {
-                    Log.i("cannot parse next page","from " + next)
-                }
-            }
-        }
-    }
 
     companion object {
         private val LINK_PATTERN = Pattern.compile("<([^>]*)>[\\s]*;[\\s]*rel=\"([a-zA-Z0-9]+)\"")
-        private val PAGE_PATTERN = Pattern.compile("page=(\\d+)")
-        private const val NEXT_LINK = "next"
 
-        private fun String.extractLinks(): Map<String, String> {
-            val links = mutableMapOf<String, String>()
+        private fun String.extractLinks(): Map<String?, String> {
+            val links = mutableMapOf<String?, String>()
             val matcher = LINK_PATTERN.matcher(this)
 
             while (matcher.find()) {
                 val count = matcher.groupCount()
                 if (count == 2) {
-                    links[matcher.group(2)] = matcher.group(1)
+                    links[matcher.group(2)] = matcher.group(1)!!
                 }
             }
             return links

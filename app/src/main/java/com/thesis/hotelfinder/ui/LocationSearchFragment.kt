@@ -88,6 +88,7 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
 
                 if(locationSearchResponse?.data != null){
                     sharedViewModel.setLocationSearchId(locationSearchResponse.data.location_id)
+                    Log.i("Location", locationSearchResponse.data.location_id.toString())
                     sharedViewModel.rvScrollPostion.value = null
                     view!!.findNavController().navigate(R.id.action_locationSearchFragment_to_hotelFragment)
                 }else{

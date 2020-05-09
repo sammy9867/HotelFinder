@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -18,6 +19,7 @@ import kotlinx.android.synthetic.main.layout_hotel_items.view.*
 class AmenityRecyclerAdapter(private val context: Context, private val amenityList: MutableList<AmenityFilter>) :
     RecyclerView.Adapter<AmenityRecyclerAdapter.AmenityListViewHolder>(){
 
+    var lastPosition = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AmenityListViewHolder {
         val view : View = LayoutInflater.from(context).inflate(R.layout.layout_amenities, parent, false)
         return AmenityListViewHolder(view)
@@ -31,11 +33,13 @@ class AmenityRecyclerAdapter(private val context: Context, private val amenityLi
                 .diskCacheStrategy(DiskCacheStrategy.ALL))
             .into(holder.amenityIv)
         holder.amenityTv.text = amenity.name
+
     }
 
     override fun getItemCount(): Int {
         return amenityList.size
     }
+
 
     inner class AmenityListViewHolder(itemView: View):
         RecyclerView.ViewHolder(itemView){

@@ -2,17 +2,21 @@ package com.thesis.hotelfinder.ui
 
 
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textview.MaterialTextView
 import com.google.gson.GsonBuilder
 
 import com.thesis.hotelfinder.R
@@ -56,7 +60,6 @@ class HotelFragment : Fragment(), OnHotelListener {
 
         if(sharedViewModel.locationId.value != null){
             val locationId = sharedViewModel.locationId.value!!
-
             // List hotels
             listHotels(binding, locationId)
         }
@@ -93,7 +96,7 @@ class HotelFragment : Fragment(), OnHotelListener {
                     hotelList.clear()
                     val adapter = HotelRecyclerAdapter(context!!, hotelList, this)
                     binding.rvHotel.adapter = adapter
-                    binding.rvHotel.layoutManager = LinearLayoutManager(context)
+                    binding.rvHotel.layoutManager = LinearLayoutManager (context)
                     if(sharedViewModel.rvScrollPostion.value != null){
                         binding.rvHotel.scrollToPosition(sharedViewModel.rvScrollPostion.value!!)
                     }
@@ -111,6 +114,12 @@ class HotelFragment : Fragment(), OnHotelListener {
 
 
                     binding.rvHotel.adapter!!.notifyDataSetChanged()
+                    postponeEnterTransition()
+                    binding.rvHotel.viewTreeObserver
+                        .addOnPreDrawListener {
+                            startPostponedEnterTransition()
+                            true
+                        }
 
                 }else{
                     binding.progressBarHotels.show()
@@ -159,12 +168,21 @@ class HotelFragment : Fragment(), OnHotelListener {
 
     }
 
-    override fun onHotelClick(position: Int) {
+    override fun onHotelClick(position: Int, iv: AppCompatImageView, tv: MaterialTextView) {
         val hotel = hotelList[position]
-        val bundle = bundleOf("hotel_location_id" to  hotel.location_id)
+        val extras = FragmentNavigatorExtras(
+            iv to hotel.photo!!.images.original.url,
+            tv to hotel.name
+        )
+        val action = HotelFragmentDirections.actionHotelFragmentToHotelDetailsFragment(
+            hotelLocationId = hotel.location_id,
+            hotelImage = hotel.photo!!.images.original.url,
+            hotelName = hotel.name
+        )
         val layoutManager = binding.rvHotel.layoutManager
         sharedViewModel.setRvScrollPosition((layoutManager as LinearLayoutManager).findFirstVisibleItemPosition())
-        view!!.findNavController().navigate(R.id.action_hotelFragment_to_hotelDetailsFragment, bundle)
+
+        view!!.findNavController().navigate(action, extras)
     }
 
     private fun navigateBack(){
