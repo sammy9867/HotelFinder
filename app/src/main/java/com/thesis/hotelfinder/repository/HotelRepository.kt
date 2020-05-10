@@ -44,11 +44,8 @@ class HotelRepository(context: Context,
         return object : NetworkBoundResource<List<Hotel>, HotelResponse>(AppExecutors.getInstance()) {
 
             override fun saveCallResult(item: HotelResponse) {
-                Log.i("REPO", "Inserting value into DB")
-               // Log.i("REPO", GsonBuilder().setPrettyPrinting().create().toJson(item.data))
                 CoroutineScope(Dispatchers.IO).launch {
                     val hotelList: ArrayList<Hotel> = arrayListOf()
-                       // Log.i("REPO INS", "isSucc")// GsonBuilder().setPrettyPrinting().create().toJson(item.data))//GsonBuilder().setPrettyPrinting().create().toJson(item.data))
                     for(i in item.data){
                         val hotel = Hotel(i.location_id, location_id, check_in_date,
                             number_of_adults, number_of_rooms, number_of_nights,
@@ -67,7 +64,6 @@ class HotelRepository(context: Context,
             override fun shouldFetch(data: List<Hotel>?) = data == null
 
             override fun loadFromDb(): LiveData<List<Hotel>> {
-                Log.i("REPO", "Loading from DB")
                 val hotelListLiveData : MutableLiveData<List<Hotel>> = MutableLiveData()
                 var hotelList: List<Hotel>?
                 CoroutineScope(Dispatchers.IO).launch{
@@ -75,11 +71,8 @@ class HotelRepository(context: Context,
                         number_of_adults, number_of_rooms, number_of_nights,
                         max_price, hotel_class, amenityInput)
                     if(!hotelList.isNullOrEmpty()){
-                        Log.i("REPO SIZE", "" + hotelList!!.size)
-                       // Log.i("REPO", "" + hotelList!![0].location_id + " " + hotelList!![0].name)
                         hotelListLiveData.postValue(hotelList)
                     }else{
-                        Log.i("REPO", "hotelList is null")
                         hotelListLiveData.postValue(null)
                     }
 
@@ -88,7 +81,6 @@ class HotelRepository(context: Context,
             }
 
             override fun createCall(): LiveData<ApiResponse<HotelResponse>> {
-                Log.i("REPO", "CALLING API")
                 return tripAdvisorApiService.getHotelsListFromLocationId(location_id, check_in_date, number_of_adults, number_of_rooms,
                     number_of_nights, max_price, hotel_class, amenityInput)
             }

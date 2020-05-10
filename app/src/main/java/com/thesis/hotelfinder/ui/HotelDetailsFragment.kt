@@ -88,7 +88,7 @@ class HotelDetailsFragment : Fragment() {
         showHotelDetails(hotelLocationId)
 
 
-                    // Navigate back to HotelFilters
+        // Navigate back to HotelFilters
         filterNavigateBack(binding)
     }
 
@@ -105,7 +105,6 @@ class HotelDetailsFragment : Fragment() {
                     binding.rankingIcon.visibility = View.VISIBLE
                     binding.hotelDetailsSeparator.visibility = View.VISIBLE
 
-                    Toast.makeText(context, "isSuccessful", Toast.LENGTH_SHORT).show()
                     val response = hotelDetailsResponse.data
 
                     binding.hotelDetailsAddress.text = response.address

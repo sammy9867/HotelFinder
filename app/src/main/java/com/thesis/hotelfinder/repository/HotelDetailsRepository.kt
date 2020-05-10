@@ -36,8 +36,6 @@ class HotelDetailsRepository(context: Context,
         return object : NetworkBoundResource<HotelDetails, HotelDetailsResponse>(AppExecutors.getInstance()) {
 
             override fun saveCallResult(item: HotelDetailsResponse) {
-                Log.i("REPO", "Inserting value into DB")
-              //  Log.i("isSucc", GsonBuilder().setPrettyPrinting().create().toJson(item.data))
                 CoroutineScope(Dispatchers.IO).launch {
                     hotelDetailsDao.insertHotelDetails(item.data[0])
                 }
@@ -48,7 +46,6 @@ class HotelDetailsRepository(context: Context,
             }
 
             override fun loadFromDb(): LiveData<HotelDetails> {
-                Log.i("REPO", "Loading from DB")
                 return hotelDetailsDao.getHotelDetailsByLocationId(location_id)
             }
 

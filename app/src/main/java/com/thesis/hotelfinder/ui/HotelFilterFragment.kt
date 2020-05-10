@@ -72,33 +72,27 @@ class HotelFilterFragment : Fragment() {
     private fun defaultFilter(){
 
         if(sharedViewModel.checkIn.value == null){
-            Log.i("HotelFilter", "is Null")
             val formatterCurrDateTv  =  SimpleDateFormat("yyyy-MM-dd")
             sharedViewModel.setCheckIn(formatterCurrDateTv.format(Date()).toString())
         }
 
         if(sharedViewModel.adults.value == null){
-            Log.i("HotelFilter", "is Null")
             sharedViewModel.setAdults(1)
         }
 
         if(sharedViewModel.rooms.value == null){
-            Log.i("HotelFilter", "is Null")
             sharedViewModel.setRooms(1)
         }
 
         if(sharedViewModel.nights.value == null){
-            Log.i("HotelFilter", "is Null")
             sharedViewModel.setNights(1)
         }
 
         if(sharedViewModel.maxPrice.value == null){
-            Log.i("HotelFilter", "is Null")
             sharedViewModel.setMaxPrice(30)
         }
 
         if(sharedViewModel.hotelClass.value == null){
-            Log.i("HotelFilter", "is Null")
             sharedViewModel.setHotelClass(3.0f)
         }
 
@@ -215,7 +209,6 @@ class HotelFilterFragment : Fragment() {
             }else{
                 adultsInt--
             }
-            Log.i("HotelFilter", adultsInt.toString())
             sharedViewModel.adults.value = adultsInt
         }
 
@@ -227,7 +220,6 @@ class HotelFilterFragment : Fragment() {
             }else{
                 adultsInt++
             }
-            Log.i("HotelFilter", adultsInt.toString())
             sharedViewModel.adults.value = adultsInt
         }
     }
@@ -241,7 +233,6 @@ class HotelFilterFragment : Fragment() {
             }else{
                 roomsInt--
             }
-            Log.i("HotelFilter", roomsInt.toString())
             sharedViewModel.rooms.value = roomsInt
         }
 
@@ -253,7 +244,6 @@ class HotelFilterFragment : Fragment() {
             }else{
                 roomsInt++
             }
-            Log.i("HotelFilter", roomsInt.toString())
             sharedViewModel.rooms.value = roomsInt
         }
     }
@@ -279,7 +269,6 @@ class HotelFilterFragment : Fragment() {
             }else{
                 nightsInt++
             }
-            Log.i("HotelFilter", nightsInt.toString())
             sharedViewModel.nights.value = nightsInt
         }
     }
@@ -312,8 +301,6 @@ class HotelFilterFragment : Fragment() {
 
     private fun filterNavigateBack(){
         binding.hotelFilterBackIb.setOnClickListener{
-            // default filter if for the first time
-            // But get the previously applied value if applied is not pressed
             view!!.findNavController().navigate(R.id.action_hotelFilterFragment_to_hotelFragment)
         }
     }

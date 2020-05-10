@@ -83,8 +83,6 @@ class HotelFragment : Fragment(), OnHotelListener {
         val hotelClass =  sharedViewModel.hotelClass.value
         val amenities = sharedViewModel.amenities.value
 
-        Log.i("HotelFilter", "" + checkIn + " " + adults + " " + rooms + " " + nights)
-        Log.i("HotelFilter", "" + maxPrice + " " + hotelClass + " " + amenities)
 
         hotelsViewModel.getHotelsListFromLocationId(getLocationId, checkIn!!, adults!!, rooms!!, nights!!,
         maxPrice!!, hotelClass!!, amenities!!).
@@ -131,38 +129,31 @@ class HotelFragment : Fragment(), OnHotelListener {
     private fun defaultFilter(){
 
         if(sharedViewModel.checkIn.value == null){
-            Log.i("HotelFilter", "is Null")
             val formatterCurrDateTv  =  SimpleDateFormat("yyyy-MM-dd")
             sharedViewModel.setCheckIn(formatterCurrDateTv.format(Date()).toString())
         }
 
         if(sharedViewModel.adults.value == null){
-            Log.i("HotelFilter", "is Null")
             sharedViewModel.setAdults(1)
         }
 
         if(sharedViewModel.rooms.value == null){
-            Log.i("HotelFilter", "is Null")
             sharedViewModel.setRooms(1)
         }
 
         if(sharedViewModel.nights.value == null){
-            Log.i("HotelFilter", "is Null")
             sharedViewModel.setNights(1)
         }
 
         if(sharedViewModel.maxPrice.value == null){
-            Log.i("HotelFilter", "is Null")
             sharedViewModel.setMaxPrice(30)
         }
 
         if(sharedViewModel.hotelClass.value == null){
-            Log.i("HotelFilter", "is Null")
             sharedViewModel.setHotelClass(3.0f)
         }
 
         if(sharedViewModel.amenities.value == null){
-            Log.i("HotelFilter", "is Null")
             sharedViewModel.setAmenities("")
         }
 

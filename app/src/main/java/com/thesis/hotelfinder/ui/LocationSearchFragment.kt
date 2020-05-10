@@ -68,9 +68,8 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 
                 if(query == null || query.isEmpty()){
-                    Toast.makeText(context, "Query is empty", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Enter a destination", Toast.LENGTH_SHORT).show()
                 }else{
-                    Log.i("Name:", query.toLowerCase())
                     searchHotels(query.toLowerCase())
                 }
 
@@ -88,7 +87,6 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
 
                 if(locationSearchResponse?.data != null){
                     sharedViewModel.setLocationSearchId(locationSearchResponse.data.location_id)
-                    Log.i("Location", locationSearchResponse.data.location_id.toString())
                     sharedViewModel.rvScrollPostion.value = null
                     view!!.findNavController().navigate(R.id.action_locationSearchFragment_to_hotelFragment)
                 }else{
@@ -99,7 +97,6 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
 
     private fun getPhotos(binding : FragmentLocationSearchBinding){
         countryList = CountryData().getCountryList()
-        Log.i("CountryList SIZE", countryList.size.toString())
 
         val adapter = StaggeredRecyclerAdapter(context!!, countryList, this)
         val manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -112,7 +109,6 @@ class LocationSearchFragment : Fragment(), OnCountryListener {
 
     override fun onCountryClick(position: Int) {
         val country = countryList[position]
-        Log.i("Name:", country.name)
         searchHotels(country.name)
     }
 }
